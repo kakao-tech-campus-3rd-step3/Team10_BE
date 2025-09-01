@@ -53,7 +53,7 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/igemoney-be:latest
 
             # 2. 기존에 실행 중인 컨테이너가 있다면 중지하고 삭제
-            if [ $(sudo docker ps -q -f name=igemoney-be) ]; then
+            if [ $(sudo docker ps -a -q -f name=igemoney-be) ]; then
               sudo docker stop igemoney-be
               sudo docker rm igemoney-be
             fi
