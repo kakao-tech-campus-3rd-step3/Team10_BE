@@ -12,4 +12,9 @@ public class testController {
 	public String test() {
 		return "test";
 	}
+
+	@GetMapping
+	public String blankDomain() {
+		return "sadajobe.shop은 이게머니 백엔드의 배포 도메인입니다.";
+	}
 }
