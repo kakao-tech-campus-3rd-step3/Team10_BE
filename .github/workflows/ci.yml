@@ -24,10 +24,32 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
+      - name: Pull and run Mysql container
+        run: |
+          docker run --name mysql-test \
+            -e MYSQL_ROOT_PASSWORD=1234 \
+            -e MYSQL_DATABASE=igemoney-mysql \
+            -p 3306:3306 \
+            -d mysql:latest
+
+      - name: Wait for MySQL to be ready
+        run: |
+          echo "Waiting for MySQL to start..."
+          for i in {30..0}; do
+            if docker exec mysql-test mysqladmin ping -h localhost --silent; then
+              echo "MySQL is ready!"
+              break
+            fi
+            echo "MySQL is unavailable - sleeping"
+            sleep 2
+          done
+          if [ "$i" = 0 ]; then
+            echo "MySQL failed to start"
+            exit 1
+          fi
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
       - name: Build with Gradle Wrapper
         run: ./gradlew build
-        env:
-          SPRING_PROFILES_ACTIVE: ci
