@@ -3,8 +3,6 @@ package com.igemoney.igemoney_BE.user;
 import com.igemoney.igemoney_BE.BaseEntity.BaseEntity;
 import jakarta.persistence.*;
 
-import java.security.Timestamp;
-
 @Entity
 @Table(name = "user")
 public class UserModel extends BaseEntity {
