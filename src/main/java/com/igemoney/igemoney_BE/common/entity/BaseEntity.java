@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.BaseEntity;
+package com.igemoney.igemoney_BE.common.entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -17,5 +17,5 @@ public abstract class BaseEntity {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updatedDate;
+    private LocalDateTime updatedAt;
 }
