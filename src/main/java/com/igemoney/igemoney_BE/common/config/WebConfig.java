@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.config;
+package com.igemoney.igemoney_BE.common.config;
 
 
 import org.springframework.context.annotation.Configuration;
