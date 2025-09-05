@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "user")
-public class UserModel extends BaseEntity {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String userId;
@@ -18,14 +18,14 @@ public class UserModel extends BaseEntity {
     private String oauthId;
 
     @Column(name = "rating_point")
-    private int rating_point;
+    private int ratingPoint;
 
     @Column(name = "consecutive_attendence_days")
-    private int consecutive_attendence;
+    private int consecutiveAttendence;
 
     @Column(name = "today_solved_count")
-    private int today_count;
+    private int todayCount;
 
     @Column(name = "is_active")
-    private boolean is_active;
+    private boolean isActive;
 }
