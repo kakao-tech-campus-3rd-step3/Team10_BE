@@ -1,6 +1,6 @@
-package com.igemoney.igemoney_BE.user;
+package com.igemoney.igemoney_BE.user.entity;
 
-import com.igemoney.igemoney_BE.BaseEntity.BaseEntity;
+import com.igemoney.igemoney_BE.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
