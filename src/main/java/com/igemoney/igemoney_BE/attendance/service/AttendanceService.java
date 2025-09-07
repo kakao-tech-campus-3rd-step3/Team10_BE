@@ -1,7 +1,7 @@
 package com.igemoney.igemoney_BE.attendance.service;
 
 import com.igemoney.igemoney_BE.attendance.dto.AttendanceResponseDto;
-import com.igemoney.igemoney_BE.attendance.entity.User;
+import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.attendance.repository.UserRepositoryJPA;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
