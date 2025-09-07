@@ -1,6 +1,6 @@
 package com.igemoney.igemoney_BE.attendance.repository;
 
-import com.igemoney.igemoney_BE.attendance.entity.User;
+import com.igemoney.igemoney_BE.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
