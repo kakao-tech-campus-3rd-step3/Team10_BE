@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.quiz.entity;
 
+import com.igemoney.igemoney_BE.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,9 +16,8 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EntityListeners(AuditingEntityListener.class)
 @Builder
-public class Quiz {
+public class Quiz extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "quiz_id")
@@ -48,12 +48,4 @@ public class Quiz {
 
     @Column(name = "correct_rate", precision = 5, scale = 2)
     private BigDecimal correctRate;
-
-    @CreatedDate
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }
