@@ -1,0 +1,47 @@
+name: Bug
+description: 버그 제보/수정
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: dropdown
+    id: severity
+    attributes:
+      label: 심각도
+      options: [blocker, critical, major, minor, trivial]
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: 환경
+      placeholder: ex) dev, Java 17 / Spring Boot 3.x
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: 재현 단계
+      placeholder: |
+        1) ...
+        2) ...
+        3) ...
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대 동작
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: 실제 동작/로그
+
+  - type: checkboxes
+    id: impact
+    attributes:
+      label: 영향도
+      options:
+        - label: 데이터 손상 우려
+        - label: 보안 이슈
+        - label: 설정(application.yml) 관련
+

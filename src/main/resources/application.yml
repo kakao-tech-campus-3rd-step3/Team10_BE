@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: igemoney_BE
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/igemoney-mysql
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        format_sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
+      encoding: utf-8

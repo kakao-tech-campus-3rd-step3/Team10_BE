@@ -1,0 +1,43 @@
+name: Task
+description: 실제 작업 단위(기능, 리팩토링, 설정 변경)
+title: "[Task]: "
+labels: [task]
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: 작업 요약
+      placeholder: ex) 회원가입 API 작성
+    validations:
+      required: true
+
+  - type: input
+    id: parent
+    attributes:
+      label: 상위 Epic(선택)
+      placeholder: ex) #120
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 상세 내용(간단)
+      placeholder: 변경 포인트, 설계/의사결정 메모
+
+  - type: checkboxes
+    id: impacts
+    attributes:
+      label: 영향도
+      options:
+        - label: DB 스키마/마이그레이션 영향
+        - label: application.yml / profile 변경
+        - label: 보안/권한 영향
+
+  - type: textarea
+    id: checklist
+    attributes:
+      label: 체크리스트
+      placeholder: |
+        - [ ] 브랜치 생성
+        - [ ] 코드 작성
+        - [ ] 로컬 빌드/테스트 통과
+

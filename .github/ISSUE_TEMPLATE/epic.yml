@@ -1,0 +1,36 @@
+name: Epic
+description: 큰 단위 작업을 정의합니다.
+title: "[Epic]: "
+labels: [epic]
+body:
+  - type: input
+    id: goal
+    attributes:
+      label: 목표(한 줄)
+      placeholder: ex) 회원 관리 기능 구현
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: 범위(간단)
+      placeholder: 포함 / 제외
+
+  - type: textarea
+    id: subissues
+    attributes:
+      label: 서브 이슈(번호로 연결)
+      description: 생성된 Task/Bug 이슈 번호를 체크박스로 적어주세요.
+      placeholder: |
+        - [ ] #123 회원가입 API
+        - [ ] #124 로그인 API
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 완료 기준
+      placeholder: ex) 주요 시나리오 동작, 기본 테스트 통과
+    validations:
+      required: true
+
