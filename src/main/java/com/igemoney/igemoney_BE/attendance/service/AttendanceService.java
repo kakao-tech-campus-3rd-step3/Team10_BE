@@ -24,7 +24,7 @@ public class AttendanceService {
         User user = userRepository.findByOauthId(oauthId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        int solvedCount = user.getTodaySolvedCount();
+        int solvedCount = user.gettodayCount();
         boolean attendanceToday = solvedCount >= ATTENDANCE_THRESHOLD;
 
         return new AttendanceResponseDto(attendanceToday, solvedCount);
@@ -34,8 +34,7 @@ public class AttendanceService {
         User user = userRepository.findByOauthId(oauthId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
-        int newCount = user.getTodaySolvedCount() + 1;
-        user.setTodaySolvedCount(newCount);
+        user.increaseTodaySolvedCount();
 
         userRepository.save(user);
     }
