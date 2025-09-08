@@ -21,17 +21,17 @@ public class QuizService {
     private final QuizRepository quizRepository;
     private final TopicRepository topicRepository;
     public Quiz createQuiz(QuizCreateRequest request) {
-        QuizTopic topic = topicRepository.findById(request.getTopicId())
+        QuizTopic topic = topicRepository.findById(request.topicId())
                 .orElseThrow(() -> new IllegalArgumentException("Topic not found"));
 
         Quiz quiz = Quiz.builder()
-                .questionTitle(request.getQuestionTitle())
-                .questionType(QuestionType.valueOf(request.getQuestionType()))
-                .questionData(request.getQuestionData())
-                .difficultyLevel(DifficultyLevel.valueOf(request.getDifficultyLevel()))
-                .explanation(request.getExplanation())
-                .questionOrder(request.getQuestionOrder())
-                .correctRate(request.getCorrectRate())
+                .questionTitle(request.questionTitle())
+                .questionType(QuestionType.valueOf(request.questionType()))
+                .questionData(request.questionData())
+                .difficultyLevel(DifficultyLevel.valueOf(request.difficultyLevel()))
+                .explanation(request.explanation())
+                .questionOrder(request.questionOrder())
+                .correctRate(request.correctRate())
                 .topic(topic)
                 .build();
 
@@ -50,19 +50,19 @@ public class QuizService {
     }
 
     private QuizResponse toResponse(Quiz q) {
-        return QuizResponse.builder()
-                .quizId(q.getQuizId())
-                .questionTitle(q.getQuestionTitle())
-                .questionType(q.getQuestionType().name())
-                .questionData(q.getQuestionData())
-                .difficultyLevel(q.getDifficultyLevel().name())
-                .explanation(q.getExplanation())
-                .questionOrder(q.getQuestionOrder())
-                .correctRate(q.getCorrectRate())
-                .topicId(q.getTopic().getId())
-                .topicName(q.getTopic().getName())
-                .createdAt(q.getCreatedAt())
-                .updatedAt(q.getUpdatedAt())
-                .build();
+        return new QuizResponse(
+                q.getQuizId(),
+                q.getQuestionTitle(),
+                q.getQuestionType().name(),
+                q.getQuestionData(),
+                q.getDifficultyLevel().name(),
+                q.getExplanation(),
+                q.getQuestionOrder(),
+                q.getCorrectRate(),
+                q.getTopic().getId(),
+                q.getTopic().getName(),
+                q.getCreatedAt(),
+                q.getUpdatedAt()
+        );
     }
 }
