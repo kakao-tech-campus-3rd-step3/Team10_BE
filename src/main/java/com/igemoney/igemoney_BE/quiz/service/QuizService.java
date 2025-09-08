@@ -2,8 +2,8 @@ package com.igemoney.igemoney_BE.quiz.service;
 
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.entity.DifficultyLevel;
-import com.igemoney.igemoney_BE.quiz.entity.QuestionType;
+import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
+import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;

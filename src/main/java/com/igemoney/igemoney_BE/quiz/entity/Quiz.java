@@ -1,14 +1,13 @@
 package com.igemoney.igemoney_BE.quiz.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
+import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
+import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "quiz")

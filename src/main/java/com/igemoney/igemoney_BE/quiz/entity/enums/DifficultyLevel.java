@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.quiz.entity;
+package com.igemoney.igemoney_BE.quiz.entity.enums;
 
 public enum DifficultyLevel {
     EASY,
