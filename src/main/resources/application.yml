@@ -11,7 +11,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      # todo: 배포단에선 update로 바꾸기
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
