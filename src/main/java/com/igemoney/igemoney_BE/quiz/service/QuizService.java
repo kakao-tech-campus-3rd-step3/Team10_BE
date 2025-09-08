@@ -31,7 +31,6 @@ public class QuizService {
                 .difficultyLevel(DifficultyLevel.valueOf(request.difficultyLevel()))
                 .explanation(request.explanation())
                 .questionOrder(request.questionOrder())
-                .correctRate(request.correctRate())
                 .topic(topic)
                 .build();
 
