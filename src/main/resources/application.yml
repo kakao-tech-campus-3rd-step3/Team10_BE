@@ -2,6 +2,7 @@ spring:
   application:
     name: igemoney_BE
 
+  # todo: .env 도입 시 배포단과 분리해 적용되는 스크립트 작성하기
   datasource:
     url: jdbc:mysql://localhost:3306/igemoney-mysql
     username: root
