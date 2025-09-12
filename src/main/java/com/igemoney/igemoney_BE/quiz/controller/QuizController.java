@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.quiz.controller;
 
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
@@ -29,4 +30,16 @@ public class QuizController {
     public List<QuizResponse> getAllQuizzes() {
         return quizService.getAll();
     }
+
+    @GetMapping("/{id}")
+    public QuizResponse getQuiz(@PathVariable Long id) {
+        return quizService.getQuizInfo(id);
+    }
+
+    @PostMapping("/{id}/submit")
+    public void submitQuizResult(@PathVariable Long id, @RequestBody QuizSubmitRequest request) {
+        quizService.submitQuizResult(id, request);
+    }
+
+
 }
