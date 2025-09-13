@@ -1,5 +1,7 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
+import com.igemoney.igemoney_BE.quiz.dto.TopicCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.TopicResponse;
 import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +16,9 @@ import java.util.List;
 public class TopicService {
     private final TopicRepository topicRepository;
 
-    public QuizTopic createTopic(QuizTopic topic) {
-        return topicRepository.save(topic);
+    public TopicResponse createTopic(TopicCreateRequest request) {
+        QuizTopic saved = topicRepository.save(TopicCreateRequest.toEntity(request));
+        return TopicResponse.from(saved);
     }
 
     public void deleteTopic(Long id) {
@@ -23,7 +26,9 @@ public class TopicService {
     }
 
     @Transactional(readOnly = true)
-    public List<QuizTopic> getAllTopics() {
-        return topicRepository.findAll();
+    public List<TopicResponse> getAllTopics() {
+        return topicRepository.findAll().stream()
+                .map(TopicResponse::from)
+                .toList();
     }
 }

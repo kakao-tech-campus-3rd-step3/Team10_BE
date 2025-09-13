@@ -33,60 +33,32 @@ public class QuizService {
 	private final UserQuizIncorrectRepository userQuizIncorrectRepository;
 
 
-	public Quiz createQuiz(QuizCreateRequest request) {
+	public QuizResponse createQuiz(QuizCreateRequest request) {
 		QuizTopic topic = topicRepository.findById(request.topicId())
-			.orElseThrow(() -> new IllegalArgumentException("Topic not found"));
+				.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
 
-		Quiz quiz = Quiz.builder()
-			.questionTitle(request.questionTitle())
-			.questionType(QuestionType.valueOf(request.questionType()))
-			.questionData(request.questionData())
-			.difficultyLevel(DifficultyLevel.valueOf(request.difficultyLevel()))
-			.explanation(request.explanation())
-			.questionOrder(request.questionOrder())
-			.topic(topic)
-			.build();
+		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
+		Quiz saved = quizRepository.save(quiz);
 
-		return quizRepository.save(quiz);
+		return QuizResponse.from(saved);
 	}
-
 
 	public void deleteQuiz(Long id) {
 		quizRepository.deleteById(id);
 	}
 
-
 	@Transactional(readOnly = true)
 	public List<QuizResponse> getAll() {
 		return quizRepository.findAll().stream()
-			.map(this::toResponse)
+			.map(QuizResponse::from)
 			.toList();
 	}
-
-
-	private QuizResponse toResponse(Quiz q) {
-		return new QuizResponse(
-			q.getQuizId(),
-			q.getQuestionTitle(),
-			q.getQuestionType().name(),
-			q.getQuestionData(),
-			q.getDifficultyLevel().name(),
-			q.getExplanation(),
-			q.getQuestionOrder(),
-			q.getCorrectRate(),
-			q.getTopic().getId(),
-			q.getTopic().getName(),
-			q.getCreatedAt(),
-			q.getUpdatedAt()
-		);
-	}
-
 
 	public QuizResponse getQuizInfo(Long id) {
 		Quiz quiz = quizRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
 
-		return toResponse(quiz);
+		return QuizResponse.from(quiz);
 	}
 
 
