@@ -1,5 +1,7 @@
 package com.igemoney.igemoney_BE.quiz.controller;
 
+import com.igemoney.igemoney_BE.quiz.dto.TopicCreateRequest;
+import com.igemoney.igemoney_BE.quiz.dto.TopicResponse;
 import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.service.TopicService;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +16,8 @@ public class TopicController {
     private final TopicService topicService;
 
     @PostMapping
-    public QuizTopic createTopic(@RequestBody QuizTopic topic) {
-        return topicService.createTopic(topic);
+    public TopicResponse createTopic(@RequestBody TopicCreateRequest request) {
+        return topicService.createTopic(request);
     }
 
     @DeleteMapping("/{id}")
@@ -24,7 +26,7 @@ public class TopicController {
     }
 
     @GetMapping
-    public List<QuizTopic> getAllTopics() {
+    public List<TopicResponse> getAllTopics() {
         return topicService.getAllTopics();
     }
 }
