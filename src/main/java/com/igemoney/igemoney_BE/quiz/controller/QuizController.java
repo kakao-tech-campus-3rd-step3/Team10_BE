@@ -17,7 +17,7 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping
-    public Quiz createQuiz(@RequestBody QuizCreateRequest quiz){
+    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
         return quizService.createQuiz(quiz);
     }
 
