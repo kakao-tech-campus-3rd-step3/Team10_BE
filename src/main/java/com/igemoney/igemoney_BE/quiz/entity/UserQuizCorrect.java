@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class UserQuizCorrect extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long userQuizCorrectId;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
