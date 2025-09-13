@@ -45,7 +45,7 @@ public class UserQuizIncorrect extends BaseEntity {
 	public UserQuizIncorrect(User user, Quiz quiz) {
 		this.user = user;
 		this.quiz = quiz;
-		this.nextReviewDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(1);
+		this.nextReviewDate = LocalDate.now().plusDays(1);
 		this.reviewCycle = ReviewStep.D1;
 		this.isCompleted = false;
 	}
@@ -58,7 +58,7 @@ public class UserQuizIncorrect extends BaseEntity {
 
 		if (this.reviewCycle == ReviewStep.D1){
 			this.reviewCycle = ReviewStep.D4;
-			this.nextReviewDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(4);
+			this.nextReviewDate = LocalDate.now().plusDays(4);
 		} else if (this.reviewCycle == ReviewStep.D4){
 			this.reviewCycle = ReviewStep.DONE;
 			this.isCompleted = true;
@@ -72,10 +72,10 @@ public class UserQuizIncorrect extends BaseEntity {
 		}
 
 		if (this.reviewCycle == ReviewStep.D1){
-			this.nextReviewDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(1);
+			this.nextReviewDate = LocalDate.now().plusDays(1);
 		} else if (this.reviewCycle == ReviewStep.D4){
 			this.reviewCycle = ReviewStep.D1;
-			this.nextReviewDate = LocalDate.now(ZoneId.of("Asia/Seoul")).plusDays(1);
+			this.nextReviewDate = LocalDate.now().plusDays(1);
 		}
 	}
 
