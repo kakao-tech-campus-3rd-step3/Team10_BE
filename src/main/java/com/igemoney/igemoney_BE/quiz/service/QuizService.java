@@ -35,7 +35,7 @@ public class QuizService {
 
 	public QuizResponse createQuiz(QuizCreateRequest request) {
 		QuizTopic topic = topicRepository.findById(request.topicId())
-				.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
+			.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
 
 		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
 		Quiz saved = quizRepository.save(quiz);
@@ -43,9 +43,11 @@ public class QuizService {
 		return QuizResponse.from(saved);
 	}
 
+
 	public void deleteQuiz(Long id) {
 		quizRepository.deleteById(id);
 	}
+
 
 	@Transactional(readOnly = true)
 	public List<QuizResponse> getAll() {
@@ -54,6 +56,8 @@ public class QuizService {
 			.toList();
 	}
 
+
+	@Transactional(readOnly = true)
 	public QuizResponse getQuizInfo(Long id) {
 		Quiz quiz = quizRepository.findById(id)
 			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
