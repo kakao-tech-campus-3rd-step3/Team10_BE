@@ -2,6 +2,7 @@ spring:
   application:
     name: igemoney_BE
 
+  # todo: .env 도입 시 배포단과 분리해 적용되는 스크립트 작성하기
   datasource:
     url: jdbc:mysql://localhost:3306/igemoney-mysql
     username: root
@@ -10,7 +11,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      # todo: 배포단에선 update로 바꾸기
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
@@ -22,3 +24,4 @@ spring:
       mode: always
       data-locations: classpath:data.sql
       encoding: utf-8
+
