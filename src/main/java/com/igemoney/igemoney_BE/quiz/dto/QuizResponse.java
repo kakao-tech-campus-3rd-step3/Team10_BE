@@ -23,7 +23,7 @@ public record QuizResponse(
 ) {
     public static QuizResponse from(Quiz quiz) {
         return new QuizResponse(
-                quiz.getQuizId(),
+                quiz.getId(),
                 quiz.getQuestionTitle(),
                 quiz.getQuestionType().name(),
                 quiz.getQuestionData(),
