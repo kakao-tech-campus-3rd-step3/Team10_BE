@@ -23,7 +23,7 @@ public class User extends BaseEntity {
     private String nickname;
 
     @Column(unique = true)
-    private String oauthId;
+    private Long kakaoOauthId;
 
     @Column
     private Integer ratingPoint;
@@ -40,9 +40,9 @@ public class User extends BaseEntity {
 
     // 가입단에서 유저를 만들 때 사용하는 생성자
     @Builder
-    public User(String nickname, String oauthId) {
+    public User(String nickname, Long oauthId) {
         this.nickname = nickname;
-        this.oauthId = oauthId;
+        this.kakaoOauthId = oauthId;
         this.ratingPoint = 0;
         this.consecutiveAttendance = 1;
         this.todayCount = 0;
