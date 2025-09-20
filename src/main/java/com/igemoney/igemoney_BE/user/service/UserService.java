@@ -4,6 +4,7 @@ import com.igemoney.igemoney_BE.common.utils.JwtUtil;
 import com.igemoney.igemoney_BE.user.dto.CreateUserRequest;
 import com.igemoney.igemoney_BE.user.dto.GetKakaoTokenApiResponse;
 import com.igemoney.igemoney_BE.user.dto.GetKakaoUserInfoResponse;
+import com.igemoney.igemoney_BE.user.dto.LoginRequest;
 import com.igemoney.igemoney_BE.user.dto.LoginResponse;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
@@ -39,4 +40,19 @@ public class UserService {
         return new LoginResponse(jwtToken);
     }
 
+    public LoginResponse login(LoginRequest req) {
+        // 1. 카카오 토큰 발급
+        String kakaoAccessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
+
+        // 2. 발급받은 토큰으로 유저정보 조회해 카카오 oauthId 획득
+        Long kakaoId = oAuthProvider.getProviderUserInfo(kakaoAccessToken).id();
+
+        User user = userRepository.findByKakaoOauthId(kakaoId)
+            .orElseThrow(() -> new IllegalArgumentException("우리 서비스 미가입 카카오 유저입니다. 회원가입 해야 합니다."));
+
+        String jwtToken = jwtUtil.generateToken(user);
+
+        return new LoginResponse(jwtToken);
+
+    }
 }
