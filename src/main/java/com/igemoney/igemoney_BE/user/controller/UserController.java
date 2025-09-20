@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.user.controller;
 
 
 import com.igemoney.igemoney_BE.user.dto.CreateUserRequest;
+import com.igemoney.igemoney_BE.user.dto.LoginRequest;
 import com.igemoney.igemoney_BE.user.dto.LoginResponse;
 import com.igemoney.igemoney_BE.user.service.impl.KakaoServiceImpl;
 import com.igemoney.igemoney_BE.user.service.UserService;
@@ -25,9 +26,9 @@ public class UserController {
         return userService.register(req);
     }
 
-//    @PostMapping("/login")
-//    public LoginResponse login(@RequestBody LoginRequest req) {
-//        return userService.login(req);
-//    }
+    @PostMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest req) {
+        return userService.login(req);
+    }
 
 }
