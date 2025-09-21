@@ -4,9 +4,9 @@ spring:
 
   # todo: .env 도입 시 배포단과 분리해 적용되는 스크립트 작성하기
   datasource:
-    url: jdbc:mysql://localhost:3306/igemoney-mysql
-    username: root
-    password: 1234
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/igemoney-mysql}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:1234}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -24,4 +24,13 @@ spring:
       mode: always
       data-locations: classpath:data.sql
       encoding: utf-8
+
+
+jwt:
+  secret: ${JWT_SECRET_KEY:thisIsTemporalDefaultJwtSecretKeyNotForDevButCIPassing}
+  expiration: 864000000 # 240 hours for dev
+
+kakao:
+  client-id: ${KAKAO_CLIENT_ID:5e45005280acdac029d1a800d58c709e}
+  redirect-uri: http://localhost:8080
 
