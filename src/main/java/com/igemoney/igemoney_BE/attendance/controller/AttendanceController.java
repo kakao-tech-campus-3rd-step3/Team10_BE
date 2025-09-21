@@ -23,8 +23,8 @@ public class AttendanceController {
     @GetMapping("/api/users/me/attendance")
     public ResponseEntity<?> attendance(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-            String oauthId = extractOauthIdFromJwt(authorizationHeader);
-            AttendanceResponseDto response = attendanceService.getTodayAttendance(oauthId);
+            Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
+            AttendanceResponseDto response = attendanceService.getTodayAttendance(kakaoOauthId);
             return ResponseEntity.ok(response);
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -35,8 +35,8 @@ public class AttendanceController {
     @PostMapping("/api/users/me/attendence/solve")
     public ResponseEntity<?> incrementSolvedCount(@RequestHeader("Authorization") String authorizationHeader) {
         try {
-            String oauthId = extractOauthIdFromJwt(authorizationHeader);
-            attendanceService.incrementTodaySolvedCount(oauthId);
+            Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
+            attendanceService.incrementTodaySolvedCount(kakaoOauthId);
             return ResponseEntity.ok("오늘 푼 문제 수가 증가했습니다.");
         } catch (NoSuchElementException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -44,9 +44,9 @@ public class AttendanceController {
         }
     }
 
-    private String extractOauthIdFromJwt(String token) {
+    private Long extractOauthIdFromJwt(String token) {
         // JWT 파싱 로직 (실제로 JWT 라이브러리 사용 권장)
         // 임시
-        return "example_kakao_oauth_id";
+        return 1L;
     }
 }
