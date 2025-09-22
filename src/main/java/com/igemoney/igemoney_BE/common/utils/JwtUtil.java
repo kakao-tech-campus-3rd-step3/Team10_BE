@@ -33,8 +33,6 @@ public class JwtUtil {
         return Jwts.builder()
             .subject(user.getUserId().toString())
             .claim("nickname", user.getNickname())
-            .claim("consecutiveAttendance", user.getConsecutiveAttendance().toString())
-            .claim("todayCount", user.getTodayCount())
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(secretKey, Jwts.SIG.HS256)
