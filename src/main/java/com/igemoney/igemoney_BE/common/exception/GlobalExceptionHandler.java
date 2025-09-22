@@ -11,10 +11,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotRegisteredUserException.class)
     public ResponseEntity<ErrorResponse> handleNotRegisteredUserException(NotRegisteredUserException e) {
-        ErrorResponse errorBody = ErrorResponse.builder()
-            .message(e.getMessage())
-            .statusCode(HttpStatus.UNAUTHORIZED.value())
-            .build();
+        ErrorResponse errorBody = ErrorResponse.of(HttpStatus.UNAUTHORIZED.value(), e.getMessage());
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorBody);
     }
