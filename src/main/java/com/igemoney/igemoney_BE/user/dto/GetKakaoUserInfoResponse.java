@@ -1,11 +1,12 @@
 package com.igemoney.igemoney_BE.user.dto;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GetKakaoUserInfoResponse(
     Long id,
-    @JsonProperty("kakao_account")
     KakaoAccount kakaoAccount
 ) {
     public record KakaoAccount(
@@ -13,7 +14,6 @@ public record GetKakaoUserInfoResponse(
     ) {
         public record KakaoUserProfile(
             String nickname,
-            @JsonProperty("profile_image_url")
             String profileImageUrl
         ) {
         }
