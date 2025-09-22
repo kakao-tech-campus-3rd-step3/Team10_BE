@@ -49,8 +49,6 @@ public class KakaoServiceImpl implements
             .retrieve()
             .body(GetKakaoUserInfoResponse.class);
 
-        System.out.println(response.toString());
-
         return response;
     }
 
