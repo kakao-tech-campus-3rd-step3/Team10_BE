@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.quiz.dto;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
@@ -10,7 +11,7 @@ import java.math.BigDecimal;
 public record QuizCreateRequest(
         String questionTitle,
         String questionType,
-        String questionData,
+        JsonNode questionData,
         String difficultyLevel,
         String explanation,
         Integer questionOrder,
@@ -22,7 +23,7 @@ public record QuizCreateRequest(
                 .topic(topic)
                 .questionTitle(request.questionTitle())
                 .questionType(QuestionType.valueOf(request.questionType()))
-                .questionData(request.questionData())
+                .questionData(request.questionData() != null ? request.questionData().toString() : null)
                 .difficultyLevel(DifficultyLevel.valueOf(request.difficultyLevel()))
                 .explanation(request.explanation())
                 .questionOrder(request.questionOrder())

@@ -54,23 +54,6 @@ public class QuizService {
 	}
 
 
-	private QuizResponse toResponse(Quiz q) {
-		return new QuizResponse(
-			q.getId(),
-			q.getQuestionTitle(),
-			q.getQuestionType().name(),
-			q.getQuestionData(),
-			q.getDifficultyLevel().name(),
-			q.getExplanation(),
-			q.getQuestionOrder(),
-			q.getCorrectRate(),
-			q.getTopic().getId(),
-			q.getTopic().getName(),
-			q.getCreatedAt(),
-			q.getUpdatedAt()
-		);
-	}
-
 	@Transactional(readOnly = true)
 	public QuizResponse getQuizInfo(Long id) {
 		Quiz quiz = quizRepository.findById(id)
