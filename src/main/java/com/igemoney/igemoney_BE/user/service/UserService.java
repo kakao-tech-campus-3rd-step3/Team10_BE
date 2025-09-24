@@ -24,7 +24,6 @@ public class UserService {
 
 
     public LoginResponse register(CreateUserRequest req) {
-
         // 1. 카카오 토큰 발급
         String kakaoAccessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
 
@@ -55,7 +54,6 @@ public class UserService {
         String jwtToken = jwtUtil.generateToken(user);
 
         return new LoginResponse(jwtToken);
-
     }
 
 }

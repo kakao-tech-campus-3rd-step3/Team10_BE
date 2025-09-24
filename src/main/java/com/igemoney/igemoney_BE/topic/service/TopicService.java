@@ -1,9 +1,11 @@
-package com.igemoney.igemoney_BE.quiz.service;
+package com.igemoney.igemoney_BE.topic.service;
 
-import com.igemoney.igemoney_BE.quiz.dto.TopicCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.TopicResponse;
-import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
-import com.igemoney.igemoney_BE.quiz.repository.TopicRepository;
+import com.igemoney.igemoney_BE.topic.dto.TopicCreateRequest;
+import com.igemoney.igemoney_BE.topic.dto.TopicResponse;
+import com.igemoney.igemoney_BE.topic.dto.UserTopicList;
+import com.igemoney.igemoney_BE.topic.dto.UserTopicResponse;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
+import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,5 +32,11 @@ public class TopicService {
         return topicRepository.findAll().stream()
                 .map(TopicResponse::from)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public UserTopicList getUserTopics(Long userId) {
+        List<UserTopicResponse> responses = topicRepository.findUserTopicSummary(userId);
+        return new UserTopicList(responses);
     }
 }
