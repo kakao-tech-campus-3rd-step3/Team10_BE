@@ -25,14 +25,14 @@ public class UserService {
 
     public LoginResponse register(CreateUserRequest req) {
 
-        // 1. 카카오 토큰 발급
-        String kakaoAccessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
+        // 1. 액세스 토큰 발급
+        String accessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
 
-        // 2. 발급받은 토큰으로 유저정보 조회해 카카오 oauthId 획득
-        Long kakaoId = oAuthProvider.getProviderUserInfo(kakaoAccessToken).id();
+        // 2. 발급받은 토큰으로 유저정보 조회해 oauthId 획득
+        Long oauthId = oAuthProvider.getProviderUserInfo(accessToken).id();
 
-        // 3. 닉네임, kakaoOauthId로 새 유저 등록
-        User savedUser = userRepository.save(new User(req.nickname(), kakaoId));
+        // 3. 닉네임, oauthId로 새 유저 등록
+        User savedUser = userRepository.save(new User(req.nickname(), oauthId));
 
         // 4. 우리 서비스 자체 jwt accessToken 발급
         // todo: refreshToken 공부해서 적용해보기
@@ -42,14 +42,14 @@ public class UserService {
     }
 
     public LoginResponse login(LoginRequest req) {
-        // 1. 카카오 토큰 발급
-        String kakaoAccessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
+        // 1. 액세스 토큰 발급
+        String accessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
 
-        // 2. 발급받은 토큰으로 유저정보 조회해 카카오 oauthId 획득
-        Long kakaoId = oAuthProvider.getProviderUserInfo(kakaoAccessToken).id();
+        // 2. 발급받은 토큰으로 유저정보 조회해 oauthId 획득
+        Long oauthId = oAuthProvider.getProviderUserInfo(accessToken).id();
 
         // 3. 가입하지 않은 유저라면 401에러 리턴
-        User user = userRepository.findByKakaoOauthId(kakaoId)
+        User user = userRepository.findByKakaoOauthId(oauthId)
             .orElseThrow(() -> new NotRegisteredUserException("가입하지 않은 유저입니다. 회원가입 해야 합니다."));
 
         String jwtToken = jwtUtil.generateToken(user);
