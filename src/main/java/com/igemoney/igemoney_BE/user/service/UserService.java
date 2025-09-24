@@ -22,7 +22,7 @@ public class UserService {
 
 
     public LoginResponse register(CreateUserRequest req) {
-
+      
         // 1. 액세스 토큰 발급
         String accessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
 
@@ -54,7 +54,6 @@ public class UserService {
         String jwtToken = jwtUtil.generateToken(user);
 
         return new LoginResponse(jwtToken);
-
     }
 
 }

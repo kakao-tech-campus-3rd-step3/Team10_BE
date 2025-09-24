@@ -3,6 +3,7 @@ package com.igemoney.igemoney_BE.quiz.entity;
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
 import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import jakarta.persistence.*;
 import lombok.*;
 

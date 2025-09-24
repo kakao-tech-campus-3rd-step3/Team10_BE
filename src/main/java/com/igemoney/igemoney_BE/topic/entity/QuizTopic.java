@@ -1,13 +1,8 @@
-package com.igemoney.igemoney_BE.quiz.entity;
+package com.igemoney.igemoney_BE.topic.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "quiz_topic")

@@ -2,7 +2,7 @@ package com.igemoney.igemoney_BE.quiz.dto;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
-import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
 import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 

@@ -1,6 +1,5 @@
 package com.igemoney.igemoney_BE.common.utils;
 
-
 import com.igemoney.igemoney_BE.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-
 
 @Component
 public class JwtUtil {

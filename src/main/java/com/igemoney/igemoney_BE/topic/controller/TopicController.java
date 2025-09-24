@@ -1,9 +1,11 @@
-package com.igemoney.igemoney_BE.quiz.controller;
+package com.igemoney.igemoney_BE.topic.controller;
 
-import com.igemoney.igemoney_BE.quiz.dto.TopicCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.TopicResponse;
-import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
-import com.igemoney.igemoney_BE.quiz.service.TopicService;
+import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.common.utils.JwtUtil;
+import com.igemoney.igemoney_BE.topic.dto.TopicCreateRequest;
+import com.igemoney.igemoney_BE.topic.dto.TopicResponse;
+import com.igemoney.igemoney_BE.topic.dto.UserTopicList;
+import com.igemoney.igemoney_BE.topic.service.TopicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,6 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicController {
     private final TopicService topicService;
+    private final JwtUtil jwtUtil;
 
     @PostMapping
     public TopicResponse createTopic(@RequestBody TopicCreateRequest request) {
@@ -25,8 +28,14 @@ public class TopicController {
         topicService.deleteTopic(id);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<TopicResponse> getAllTopics() {
         return topicService.getAllTopics();
+    }
+
+    @Authenticated
+    @GetMapping
+    public UserTopicList getUserTopics(@RequestAttribute("userId") Long userId){
+        return topicService.getUserTopics(userId);
     }
 }
