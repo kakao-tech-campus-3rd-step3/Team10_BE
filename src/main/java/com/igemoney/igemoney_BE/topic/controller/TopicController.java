@@ -35,9 +35,7 @@ public class TopicController {
 
     @Authenticated
     @GetMapping
-    public UserTopicList getUserTopics(@RequestHeader("Authorization") String authHeader) {
-        String token = authHeader.replace("Bearer ", "");
-        Long userId = Long.parseLong(jwtUtil.getSubject(token));
+    public UserTopicList getUserTopics(@RequestAttribute("userId") Long userId){
         return topicService.getUserTopics(userId);
     }
 }
