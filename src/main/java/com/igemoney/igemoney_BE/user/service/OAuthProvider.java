@@ -1,6 +1,9 @@
 package com.igemoney.igemoney_BE.user.service;
 
-public interface OAuthProvider<T, I> {
-    T getProviderAccessToken(String authorizationCode);
-    I getProviderUserInfo(String accessToken);
+import com.igemoney.igemoney_BE.user.dto.OAuthTokenResponse;
+import com.igemoney.igemoney_BE.user.dto.OAuthUserInfoResponse;
+
+public interface OAuthProvider {
+    OAuthTokenResponse getProviderAccessToken(String authorizationCode);
+    OAuthUserInfoResponse getProviderUserInfo(String accessToken);
 }
