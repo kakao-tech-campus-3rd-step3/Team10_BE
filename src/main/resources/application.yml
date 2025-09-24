@@ -34,3 +34,6 @@ kakao:
   client-id: ${KAKAO_CLIENT_ID:5e45005280acdac029d1a800d58c709e}
   redirect-uri: http://localhost:8080
 
+logging:
+  pattern:
+    dateformat: "yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul"
