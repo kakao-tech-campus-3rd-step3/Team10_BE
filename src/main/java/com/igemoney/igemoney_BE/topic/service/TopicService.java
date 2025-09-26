@@ -1,9 +1,6 @@
 package com.igemoney.igemoney_BE.topic.service;
 
-import com.igemoney.igemoney_BE.topic.dto.TopicCreateRequest;
-import com.igemoney.igemoney_BE.topic.dto.TopicResponse;
-import com.igemoney.igemoney_BE.topic.dto.UserTopicList;
-import com.igemoney.igemoney_BE.topic.dto.UserTopicResponse;
+import com.igemoney.igemoney_BE.topic.dto.*;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,5 +35,10 @@ public class TopicService {
     public UserTopicList getUserTopics(Long userId) {
         List<UserTopicResponse> responses = topicRepository.findUserTopicSummary(userId);
         return new UserTopicList(responses);
+    }
+
+    public TopicQuizList getTopicQuizzes(Long userId, Long topicId) {
+        List<TopicQuizResponse> responses = topicRepository.findTopicQuizzes(userId, topicId);
+        return new TopicQuizList(responses);
     }
 }
