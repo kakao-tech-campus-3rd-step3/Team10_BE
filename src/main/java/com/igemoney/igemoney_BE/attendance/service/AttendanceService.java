@@ -3,6 +3,7 @@ package com.igemoney.igemoney_BE.attendance.service;
 import com.igemoney.igemoney_BE.attendance.dto.AttendanceResponseDto;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,14 +11,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class AttendanceService {
 
     private final UserRepository userRepository;
-
-    public AttendanceService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     private static final int ATTENDANCE_THRESHOLD = 5;
 
