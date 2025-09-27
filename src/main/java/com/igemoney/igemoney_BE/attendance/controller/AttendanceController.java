@@ -3,6 +3,7 @@ package com.igemoney.igemoney_BE.attendance.controller;
 import com.igemoney.igemoney_BE.attendance.dto.AttendanceResponseDto;
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +12,12 @@ import java.util.NoSuchElementException;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/users/me")
 @Tag(name = "User Attendence", description = "사용자 출석 API")
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
-
-    public AttendanceController(AttendanceService attendanceService) {
-        this.attendanceService = attendanceService;
-    }
 
     @GetMapping("/attendance")
     public ResponseEntity<?> attendance(@RequestHeader("Authorization") String authorizationHeader) {
