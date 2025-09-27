@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -37,5 +38,18 @@ public class AttendanceService {
         user.increaseTodaySolvedCount();
 
         userRepository.save(user);
+    }
+
+    public void updateAttendanceWithoutQuery() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getTodayCount() >= 5) {
+                user.increaseConsecutiveAttendance();
+            } else {
+                user.resetConsecutiveAttendance();
+            }
+            user.resetTodaySolvedCount();
+        }
+        userRepository.saveAll(users);
     }
 }
