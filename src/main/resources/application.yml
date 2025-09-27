@@ -11,7 +11,7 @@ spring:
     defer-datasource-initialization: true
 
 jwt:
-  secret: ${JWT_SECRET_KEY:this_is_temporal_default_jwt_secret_key_not_for_dev_but_ci_passing}
+  secret: ${JWT_SECRET_KEY:this_is_dummy_jwt_secret_key_not_for_dev_but_ci_passing_lessssssssssgo}
   expiration: 864000000 # 240h
 
 logging:
@@ -20,7 +20,7 @@ logging:
 
 
 kakao:
-  client-id: ${KAKAO_CLIENT_ID}
+  client-id: ${KAKAO_CLIENT_ID:dummy_kakao_client_id}
   redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080}
 
 springdoc:
