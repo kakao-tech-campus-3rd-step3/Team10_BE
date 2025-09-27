@@ -54,9 +54,16 @@ public class User extends BaseEntity {
         this.todayCount++;
     }
 
+    public void resetTodaySolvedCount() {
+        this.todayCount = 0;
+    }
 
-    public void updateConsecutiveAttendance(Integer consecutiveAttendance) {
-        this.consecutiveAttendance = consecutiveAttendance;
+    public void increaseConsecutiveAttendance() {
+        this.consecutiveAttendance++;
+    }
+
+    public  void resetConsecutiveAttendance() {
+        this.consecutiveAttendance = 0;
     }
 
 
