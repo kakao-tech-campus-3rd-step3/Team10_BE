@@ -40,7 +40,7 @@ public class AttendanceService {
         userRepository.save(user);
     }
 
-    public void updateAttendanceWithoutQuery() {
+    public void updateAttendanceForAllUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
             if (user.getTodayCount() >= 5) {
