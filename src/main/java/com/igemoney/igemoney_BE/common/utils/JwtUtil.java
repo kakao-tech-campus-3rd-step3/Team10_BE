@@ -1,6 +1,5 @@
 package com.igemoney.igemoney_BE.common.utils;
 
-
 import com.igemoney.igemoney_BE.user.entity.User;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
-
 
 @Component
 public class JwtUtil {
@@ -33,8 +31,6 @@ public class JwtUtil {
         return Jwts.builder()
             .subject(user.getUserId().toString())
             .claim("nickname", user.getNickname())
-            .claim("consecutiveAttendance", user.getConsecutiveAttendance().toString())
-            .claim("todayCount", user.getTodayCount())
             .issuedAt(now)
             .expiration(expiryDate)
             .signWith(secretKey, Jwts.SIG.HS256)

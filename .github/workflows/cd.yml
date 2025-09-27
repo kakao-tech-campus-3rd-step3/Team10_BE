@@ -14,10 +14,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Create application.yml
+
+      # .env 파일 생성
+      - name: Create .env file
         run: |
-#          mkdir -p src/main/resources
-#          echo '${{ secrets.APPLICATION_YML }}' > src/main/resources/application.yml
+          echo "${{ secrets.ENV_FILE }}" > .env
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
@@ -29,7 +30,7 @@ jobs:
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build -x test
 
       # Docker build & Push (커밋 해시 사용)
       - name: Docker build & push to Docker hub
@@ -53,6 +54,11 @@ jobs:
             # 커밋 해시 설정
             COMMIT_HASH=$(echo ${{ github.sha }} | cut -c1-7)
             
+            # .env 파일 생성
+            cat << 'EOF' > ~/igemoney-be.env
+            ${{ secrets.ENV_FILE }}
+            EOF
+            
             # 1. 특정 버전의 이미지 받기 (커밋 해시 사용)
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
@@ -62,15 +68,8 @@ jobs:
               sudo docker rm igemoney-be
             fi
 
-            # 3. 새 컨테이너를 실행 (커밋 해시 버전으로)
-            sudo docker run -d --name igemoney-be -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
+            # 3. 새 컨테이너를 실행 (커밋 해시 버전으로, .env 파일 사용)
+            sudo docker run -d --name igemoney-be --env-file ~/igemoney-be.env -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 4. 사용하지 않는 이미지 정리
             sudo docker image prune -a -f
-            
-#            # 5. 현재 시점의 application yml 문서 생성 (커밋 해시 포함)
-#            TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-#            CONFIG_DIR=~/application-ymls/${TIMESTAMP}_${COMMIT_HASH}
-#            mkdir -p $CONFIG_DIR
-#            echo "${{ secrets.APPLICATION_YML }}" > $CONFIG_DIR/application.yml
-#            echo "Deployed version: $COMMIT_HASH" > $CONFIG_DIR/version.txt

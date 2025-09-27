@@ -1,6 +1,6 @@
-package com.igemoney.igemoney_BE.quiz.dto;
+package com.igemoney.igemoney_BE.topic.dto;
 
-import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 
 public record TopicCreateRequest(String name
 ) {

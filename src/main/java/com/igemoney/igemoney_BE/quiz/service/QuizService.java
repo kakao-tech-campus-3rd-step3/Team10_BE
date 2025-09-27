@@ -5,12 +5,10 @@ import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
-import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
-import com.igemoney.igemoney_BE.quiz.entity.enums.QuestionType;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
-import com.igemoney.igemoney_BE.quiz.entity.QuizTopic;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
-import com.igemoney.igemoney_BE.quiz.repository.TopicRepository;
+import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import com.igemoney.igemoney_BE.quiz.repository.UserQuizAttemptRepository;
 import com.igemoney.igemoney_BE.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -53,23 +51,6 @@ public class QuizService {
 			.toList();
 	}
 
-
-	private QuizResponse toResponse(Quiz q) {
-		return new QuizResponse(
-			q.getId(),
-			q.getQuestionTitle(),
-			q.getQuestionType().name(),
-			q.getQuestionData(),
-			q.getDifficultyLevel().name(),
-			q.getExplanation(),
-			q.getQuestionOrder(),
-			q.getCorrectRate(),
-			q.getTopic().getId(),
-			q.getTopic().getName(),
-			q.getCreatedAt(),
-			q.getUpdatedAt()
-		);
-	}
 
 	@Transactional(readOnly = true)
 	public QuizResponse getQuizInfo(Long id) {
