@@ -68,8 +68,11 @@ jobs:
               sudo docker rm igemoney-be
             fi
 
-            # 3. 새 컨테이너를 실행 (커밋 해시 버전으로, .env 파일 사용)
-            sudo docker run -d --name igemoney-be --env-file ~/igemoney-be.env -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
+            # 3. 새 컨테이너를 실행 (커밋 해시 버전으로, .env 파일 사용, prod 프로파일 활성화)
+            sudo docker run -d --name igemoney-be \
+            --env-file ~/igemoney-be.env \
+            -e SPRING_PROFILES_ACTIVE=prod \
+            -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 4. 사용하지 않는 이미지 정리
             sudo docker image prune -a -f
