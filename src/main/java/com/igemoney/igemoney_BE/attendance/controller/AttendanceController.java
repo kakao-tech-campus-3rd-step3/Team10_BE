@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.attendance.controller;
 
 import com.igemoney.igemoney_BE.attendance.dto.AttendanceResponseDto;
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import java.util.NoSuchElementException;
 
 @RestController
+@Tag(name = "User Attendence", description = "사용자 출석 API")
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
