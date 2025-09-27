@@ -37,3 +37,11 @@ kakao:
 logging:
   pattern:
     dateformat: "yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul"
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC
+    operations-sorter: alpha
+  paths-to-match:
+    - /api/**
