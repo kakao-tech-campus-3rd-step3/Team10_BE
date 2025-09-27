@@ -5,14 +5,13 @@ import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
 
+
 @RestController
+@RequestMapping("/api/users/me")
 @Tag(name = "User Attendence", description = "사용자 출석 API")
 public class AttendanceController {
 
@@ -22,7 +21,7 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
-    @GetMapping("/api/users/me/attendance")
+    @GetMapping("/attendance")
     public ResponseEntity<?> attendance(@RequestHeader("Authorization") String authorizationHeader) {
         try {
             Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
@@ -34,7 +33,7 @@ public class AttendanceController {
         }
     }
 
-    @PostMapping("/api/users/me/attendence/solve")
+    @PostMapping("/attendance/solve")
     public ResponseEntity<?> incrementSolvedCount(@RequestHeader("Authorization") String authorizationHeader) {
         try {
             Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
