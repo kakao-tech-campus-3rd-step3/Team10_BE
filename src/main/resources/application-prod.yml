@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource:
+    url: ${PROD_DB_URL:jdbc:mysql://mysql-container:3306/igemoney-mysql}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update # 배포에선 update or validate
+    properties:
+      hibernate:
+        format_sql: false
+  sql:
+    init:
+      mode: never # 운영에선 data.sql 안씀
