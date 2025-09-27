@@ -17,7 +17,7 @@ public class ErrorResponse {
         this.timestamp = LocalDateTime.now();
     }
 
-    static public ErrorResponse of(int statusCode, String message) {
+    public static ErrorResponse of(int statusCode, String message) {
         return new ErrorResponse(statusCode, message);
     }
 
