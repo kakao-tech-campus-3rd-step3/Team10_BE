@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.topic.repository;
 
+import com.igemoney.igemoney_BE.topic.dto.TopicQuizResponse;
 import com.igemoney.igemoney_BE.topic.dto.UserTopicResponse;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -26,4 +27,24 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
             ORDER BY qt.id
             """, nativeQuery = true)
     List<UserTopicResponse> findUserTopicSummary(@Param("userId") Long userId);
+
+    @Query("""
+    select new com.igemoney.igemoney_BE.topic.dto.TopicQuizResponse(
+        q.id,
+        q.questionOrder,
+        q.questionTitle,
+        q.difficultyLevel,
+        case when (
+            select count(uqa)
+            from UserQuizAttempt uqa
+            where uqa.quiz.id = q.id
+              and uqa.id = :userId
+              and uqa.isCompleted = true
+        ) > 0 then true else false end
+    )
+    from Quiz q
+    where q.topic.id = :topicId
+    order by q.questionOrder asc, q.id asc
+""")
+    List<TopicQuizResponse> findTopicQuizzes(Long userId, Long topicId);
 }

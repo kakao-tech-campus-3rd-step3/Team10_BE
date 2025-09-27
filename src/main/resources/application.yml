@@ -18,6 +18,15 @@ logging:
   pattern:
     dateformat: "yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul"
 
+
 kakao:
   client-id: ${KAKAO_CLIENT_ID}
   redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080}
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC
+    operations-sorter: alpha
+  paths-to-match:
+    - /api/**
