@@ -42,6 +42,8 @@ public class AttendanceServiceTest {
             user2.increaseTodaySolvedCount();
         }
 
+        attendanceService.updateAttendanceForAllUsers();
+
         assertEquals(2, user1.getConsecutiveAttendance());
         assertEquals(0, user1.getTodayCount());
         assertEquals(0, user2.getConsecutiveAttendance());
