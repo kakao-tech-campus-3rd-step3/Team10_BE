@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.topic.dto.TopicCreateRequest;
 import com.igemoney.igemoney_BE.topic.dto.TopicQuizList;
 import com.igemoney.igemoney_BE.topic.dto.TopicResponse;
 import com.igemoney.igemoney_BE.topic.dto.UserTopicList;
+import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.topic.service.TopicService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -39,12 +40,13 @@ public class TopicController {
     @Authenticated
     @GetMapping
     public UserTopicList getTopicsProgress(@RequestAttribute("userId") Long userId){
-        return topicService.getUserTopics(userId);
+        return topicService.getTopicsProgress(userId);
     }
 
     @Authenticated
     @GetMapping("/{topicId}")
     public TopicQuizList getTopicQuizzes(@RequestAttribute("userId") Long userId, @PathVariable Long topicId){
+        QuizTopic topic = topicService.getTopicOrThrow(topicId);
         return topicService.getTopicQuizzes(userId,topicId);
     }
 }
