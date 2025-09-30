@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/topic")
+@RequestMapping("/api/topics")
 @RequiredArgsConstructor
 @Tag(name = "Quiz Topic", description = "퀴즈 토픽 API")
 public class TopicController {
@@ -38,7 +38,7 @@ public class TopicController {
 
     @Authenticated
     @GetMapping
-    public UserTopicList getUserTopics(@RequestAttribute("userId") Long userId){
+    public UserTopicList getTopicsProgress(@RequestAttribute("userId") Long userId){
         return topicService.getUserTopics(userId);
     }
 
