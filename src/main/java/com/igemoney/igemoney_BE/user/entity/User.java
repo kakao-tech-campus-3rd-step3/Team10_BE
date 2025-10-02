@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     @Column(name = "nickname", unique = true, nullable = false)
     private String nickname;
 
-    @Column(unique = true)
+    @Column(name = "kakao_oauth_id", unique = true)
     private Long kakaoOauthId;
 
     @Column
