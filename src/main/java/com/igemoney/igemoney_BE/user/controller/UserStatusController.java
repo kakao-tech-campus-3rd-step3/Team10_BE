@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.user.controller;
 
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
 import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,4 +26,11 @@ public class UserStatusController {
     public TodayAttendanceResponse getTodayAttendance(@RequestAttribute Long userId) {
         return userStatusService.getTodayAttendance(userId);
     }
+
+    @Authenticated
+    @GetMapping("/me/nickname")
+    public GetUserNicknameResponse getUserNickname(@RequestAttribute Long userId) {
+        return userStatusService.getUserNickName(userId);
+    }
+
 }
