@@ -34,15 +34,15 @@ public class AttendanceServiceTest {
         User user2 = userRepository.findById(2L).get();
 
         for(int i=0; i<5; i++) {
-            user1.increaseTodaySolvedCount();
+            attendanceService.incrementTodaySolvedCount(1L);
         }
 
         user2.increaseConsecutiveAttendance();
         for(int i=0; i<2; i++) {
-            user2.increaseTodaySolvedCount();
+            attendanceService.incrementTodaySolvedCount(2L);
         }
 
-        attendanceService.updateAttendanceForAllUsers();
+        attendanceService.resetAttendanceForAllUsers();
 
         assertEquals(2, user1.getConsecutiveAttendance());
         assertEquals(0, user1.getTodayCount());
