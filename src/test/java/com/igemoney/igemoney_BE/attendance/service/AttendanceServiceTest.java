@@ -1,6 +1,5 @@
-package com.igemoney.igemoney_BE.attendance;
+package com.igemoney.igemoney_BE.attendance.service;
 
-import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
