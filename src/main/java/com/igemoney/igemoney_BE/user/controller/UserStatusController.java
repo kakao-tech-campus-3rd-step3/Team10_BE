@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.user.controller;
 
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.user.dto.GetConsecutiveAttendanceResponse;
 import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
 import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
@@ -31,6 +32,12 @@ public class UserStatusController {
     @GetMapping("/me/nickname")
     public GetUserNicknameResponse getUserNickname(@RequestAttribute Long userId) {
         return userStatusService.getUserNickName(userId);
+    }
+
+    @Authenticated
+    @GetMapping("/me/consecutive-attendance")
+    public GetConsecutiveAttendanceResponse getConsecutiveAttendance(@RequestAttribute Long userId) {
+        return userStatusService.getConsecutiveAttendance(userId);
     }
 
 }

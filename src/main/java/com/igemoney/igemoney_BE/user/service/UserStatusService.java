@@ -1,6 +1,7 @@
 package com.igemoney.igemoney_BE.user.service;
 
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
+import com.igemoney.igemoney_BE.user.dto.GetConsecutiveAttendanceResponse;
 import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
 import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
 import com.igemoney.igemoney_BE.user.entity.User;
@@ -31,12 +32,20 @@ public class UserStatusService {
 
     }
 
-
+    @Transactional(readOnly = true)
     public GetUserNicknameResponse getUserNickName(Long userId) {
         User user = userStatusRepository.findById(userId)
             .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
 
         return new GetUserNicknameResponse(user.getNickname());
 
+    }
+
+    @Transactional(readOnly = true)
+    public GetConsecutiveAttendanceResponse getConsecutiveAttendance(Long userId) {
+        User user = userStatusRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
+
+        return new GetConsecutiveAttendanceResponse(user.getConsecutiveAttendance());
     }
 }
