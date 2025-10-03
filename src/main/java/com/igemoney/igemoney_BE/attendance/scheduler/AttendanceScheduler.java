@@ -13,6 +13,6 @@ public class AttendanceScheduler {
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 자정 실행
     public void runAttendanceUpdate() {
-        attendanceService.updateAttendanceForAllUsers();
+        attendanceService.resetAttendanceForAllUsers();
     }
 }

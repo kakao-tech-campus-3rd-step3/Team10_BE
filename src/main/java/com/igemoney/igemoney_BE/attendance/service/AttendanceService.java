@@ -34,16 +34,17 @@ public class AttendanceService {
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         user.increaseTodaySolvedCount();
+        if (user.getTodayCount() == 5) {
+            user.increaseConsecutiveAttendance();
+        }
 
         userRepository.save(user);
     }
 
-    public void updateAttendanceForAllUsers() {
+    public void resetAttendanceForAllUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            if (user.getTodayCount() >= 5) {
-                user.increaseConsecutiveAttendance();
-            } else {
+            if (user.getTodayCount() < 5) {
                 user.resetConsecutiveAttendance();
             }
             user.resetTodaySolvedCount();
