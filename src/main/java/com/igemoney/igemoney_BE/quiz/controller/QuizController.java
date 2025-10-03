@@ -3,8 +3,8 @@ package com.igemoney.igemoney_BE.quiz.controller;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
+import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
-import com.igemoney.igemoney_BE.quiz.service.BookmarkService;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,6 @@ import java.util.List;
 @Tag(name = "Quiz", description = "Quiz API")
 public class QuizController {
     private final QuizService quizService;
-    private final BookmarkService bookmarkService;
 
     @PostMapping
     public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
@@ -45,9 +44,11 @@ public class QuizController {
         quizService.submitQuizResult(id, request);
     }
 
-    @PostMapping("{quizId}/bookmark")
     @Authenticated
-    public void toggleBookmark(@RequestAttribute("userId") Long userId, @PathVariable Long quizId){
-        bookmarkService.toggle(userId, quizId);
+    @GetMapping("/review")
+    public QuizReviewResponse getQuizReview(@RequestAttribute("userId") Long userId) {
+        return quizService.getQuizReview(userId);
     }
+
+
 }

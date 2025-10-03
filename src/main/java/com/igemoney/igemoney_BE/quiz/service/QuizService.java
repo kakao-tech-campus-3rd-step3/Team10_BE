@@ -1,9 +1,7 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
 
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
@@ -58,6 +56,19 @@ public class QuizService {
 			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
 
 		return QuizResponse.from(quiz);
+	}
+
+	public QuizReviewResponse getQuizReview(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findReviewAttemptsWithQuizAndTopic(userId);
+
+		List<ReviewQuizDetail> quizDetails = attempts.stream()
+			.map(ReviewQuizDetail::from)
+			.toList();
+
+		return new QuizReviewResponse(
+				!quizDetails.isEmpty(),
+				quizDetails
+		);
 	}
 
 
