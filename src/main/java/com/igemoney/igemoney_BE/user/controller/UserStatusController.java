@@ -7,6 +7,7 @@ import com.igemoney.igemoney_BE.user.dto.GetMyRankingResponse;
 import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
 import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,18 +25,21 @@ public class UserStatusController {
 
 
     @Authenticated
+    @Operation(summary = "내 금일 출석 여부 조회")
     @GetMapping("/me/attendance")
     public TodayAttendanceResponse getTodayAttendance(@RequestAttribute Long userId) {
         return userStatusService.getTodayAttendance(userId);
     }
 
     @Authenticated
+    @Operation(summary = "내 닉네임 조회")
     @GetMapping("/me/nickname")
     public GetUserNicknameResponse getUserNickname(@RequestAttribute Long userId) {
         return userStatusService.getUserNickName(userId);
     }
 
     @Authenticated
+    @Operation(summary = "내 연속 출석일 조회")
     @GetMapping("/me/consecutive-attendance")
     public GetConsecutiveAttendanceResponse getConsecutiveAttendance(
         @RequestAttribute Long userId) {
@@ -43,7 +47,8 @@ public class UserStatusController {
     }
 
     @Authenticated
-    @GetMapping("/me/rank")
+    @Operation(summary = "내 티어 조회")
+    @GetMapping("/me/tier")
     public GetMyRankingResponse getMyRanking(@RequestAttribute Long userId) {
         return userStatusService.getMyRanking(userId);
     }
