@@ -3,6 +3,7 @@ package com.igemoney.igemoney_BE.user.controller;
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.user.dto.GetConsecutiveAttendanceResponse;
+import com.igemoney.igemoney_BE.user.dto.GetMyRankingResponse;
 import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
 import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
@@ -36,8 +37,15 @@ public class UserStatusController {
 
     @Authenticated
     @GetMapping("/me/consecutive-attendance")
-    public GetConsecutiveAttendanceResponse getConsecutiveAttendance(@RequestAttribute Long userId) {
+    public GetConsecutiveAttendanceResponse getConsecutiveAttendance(
+        @RequestAttribute Long userId) {
         return userStatusService.getConsecutiveAttendance(userId);
+    }
+
+    @Authenticated
+    @GetMapping("/me/rank")
+    public GetMyRankingResponse getMyRanking(@RequestAttribute Long userId) {
+        return userStatusService.getMyRanking(userId);
     }
 
 }
