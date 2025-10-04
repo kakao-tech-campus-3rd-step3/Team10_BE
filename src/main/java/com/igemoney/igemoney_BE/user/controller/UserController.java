@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
+@RequestMapping("/api/user") // fixme: users로
 @Tag(name = "User", description = "사용자 로그인 관련 API")
 public class UserController {
 
     private final UserService userService;
-    private final KakaoServiceImpl kakaoService;
 
     @PostMapping("/register")
     public LoginResponse register(@RequestBody CreateUserRequest req) {

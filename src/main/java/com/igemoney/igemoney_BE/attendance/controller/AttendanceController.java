@@ -15,12 +15,12 @@ public class AttendanceController {
 
     private final AttendanceService attendanceService;
 
-    @GetMapping("/attendance")
-    public ResponseEntity<?> attendance(@RequestHeader("Authorization") String authorizationHeader) {
-        Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
-        AttendanceResponseDto response = attendanceService.getTodayAttendance(kakaoOauthId);
-        return ResponseEntity.ok(response);
-    }
+//    @GetMapping("/attendance")
+//    public ResponseEntity<?> attendance(@RequestHeader("Authorization") String authorizationHeader) {
+//        Long kakaoOauthId = extractOauthIdFromJwt(authorizationHeader);
+//        AttendanceResponseDto response = attendanceService.getTodayAttendance(kakaoOauthId);
+//        return ResponseEntity.ok(response);
+//    }
 
     private Long extractOauthIdFromJwt(String token) {
         // JWT 파싱 로직 (실제로 JWT 라이브러리 사용 권장)
