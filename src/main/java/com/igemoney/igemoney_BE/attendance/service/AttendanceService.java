@@ -14,6 +14,8 @@ import java.util.NoSuchElementException;
 @Transactional
 public class AttendanceService {
 
+    private static final int TODAY_TARGET_COUNT = 5;
+
     private final UserRepository userRepository;
 
     public void incrementTodaySolvedCount(Long kakaoOauthId) {
@@ -21,7 +23,7 @@ public class AttendanceService {
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         user.increaseTodaySolvedCount();
-        if (user.getTodayCount() == 5) {
+        if (user.getTodayCount() == TODAY_TARGET_COUNT) {
             user.increaseConsecutiveAttendance();
         }
 
@@ -31,7 +33,7 @@ public class AttendanceService {
     public void resetAttendanceForAllUsers() {
         List<User> users = userRepository.findAll();
         for (User user : users) {
-            if (user.getTodayCount() < 5) {
+            if (user.getTodayCount() < TODAY_TARGET_COUNT) {
                 user.resetConsecutiveAttendance();
             }
             user.resetTodaySolvedCount();
