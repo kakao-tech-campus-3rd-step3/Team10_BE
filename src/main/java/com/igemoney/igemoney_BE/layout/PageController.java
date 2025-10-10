@@ -3,6 +3,7 @@ package com.igemoney.igemoney_BE.layout;
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.layout.dto.HomePageResponse;
+import com.igemoney.igemoney_BE.layout.dto.MypageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -20,6 +21,12 @@ public class PageController {
     @Authenticated
     public HomePageResponse getHomeInfo(@RequestAttribute("userId") Long userId){
         return pageService.getHomeInfo(userId);
+    }
+
+    @GetMapping("/mypage")
+    @Authenticated
+    public MypageResponse getMyPageInfo(@RequestAttribute("userId") Long userId){
+        return pageService.getMypageInfo(userId);
     }
 
 
