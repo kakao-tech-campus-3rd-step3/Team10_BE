@@ -59,7 +59,7 @@ public class QuizService {
 	}
 
 	public QuizReviewResponse getQuizReview(Long userId) {
-		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findReviewAttemptsWithQuizAndTopic(userId);
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userId(userId);
 
 		List<ReviewQuizDetail> quizDetails = attempts.stream()
 			.map(ReviewQuizDetail::from)
