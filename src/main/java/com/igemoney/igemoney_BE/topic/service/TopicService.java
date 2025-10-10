@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.topic.service;
 
 import com.igemoney.igemoney_BE.topic.dto.*;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
+import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class TopicService {
     }
 
     @Transactional(readOnly = true)
-    public UserTopicList getUserTopics(Long userId) {
+    public UserTopicList getTopicsProgress(Long userId) {
         List<UserTopicResponse> responses = topicRepository.findUserTopicSummary(userId);
         return new UserTopicList(responses);
     }
@@ -40,5 +41,10 @@ public class TopicService {
     public TopicQuizList getTopicQuizzes(Long userId, Long topicId) {
         List<TopicQuizResponse> responses = topicRepository.findTopicQuizzes(userId, topicId);
         return new TopicQuizList(responses);
+    }
+
+    public QuizTopic getTopicOrThrow(Long topicId) {
+        return topicRepository.findById(topicId)
+                .orElseThrow(() -> new TopicNotFoundException(topicId));
     }
 }

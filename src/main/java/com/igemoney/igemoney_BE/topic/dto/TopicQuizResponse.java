@@ -7,5 +7,6 @@ public record TopicQuizResponse(
         int questionOrder,
         String questionTitle,
         DifficultyLevel difficultyLevel,
-        boolean isSolved
+        boolean isSolved,
+        boolean isBookMarked
 ) {}

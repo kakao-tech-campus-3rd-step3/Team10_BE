@@ -1,41 +1,41 @@
 package com.igemoney.igemoney_BE.attendance.service;
 
-import com.igemoney.igemoney_BE.attendance.dto.AttendanceResponseDto;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
 public class AttendanceService {
 
     private final UserRepository userRepository;
-
-    public AttendanceService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    private static final int ATTENDANCE_THRESHOLD = 5;
-
-    public AttendanceResponseDto getTodayAttendance(Long kakaoOauthId) {
-        User user = userRepository.findByKakaoOauthId(kakaoOauthId)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-
-        int solvedCount = user.getTodayCount();
-        boolean attendanceToday = solvedCount >= ATTENDANCE_THRESHOLD;
-
-        return new AttendanceResponseDto(attendanceToday, solvedCount);
-    }
 
     public void incrementTodaySolvedCount(Long kakaoOauthId) {
         User user = userRepository.findByKakaoOauthId(kakaoOauthId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         user.increaseTodaySolvedCount();
+        if (user.getTodayCount() == 5) {
+            user.increaseConsecutiveAttendance();
+        }
 
         userRepository.save(user);
+    }
+
+    public void resetAttendanceForAllUsers() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            if (user.getTodayCount() < 5) {
+                user.resetConsecutiveAttendance();
+            }
+            user.resetTodaySolvedCount();
+        }
+        userRepository.saveAll(users);
     }
 }

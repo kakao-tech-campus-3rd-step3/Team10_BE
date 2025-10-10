@@ -40,7 +40,13 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
             where uqa.quiz.id = q.id
               and uqa.id = :userId
               and uqa.isCompleted = true
-        ) > 0 then true else false end
+        ) > 0 then true else false end,
+      case when (
+          select count(b)
+          from Bookmark b
+          where b.quiz.id = q.id
+            and b.user.userId = :userId
+      ) > 0 then true else false end\s
     )
     from Quiz q
     where q.topic.id = :topicId

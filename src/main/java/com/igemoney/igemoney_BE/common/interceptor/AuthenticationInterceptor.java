@@ -34,11 +34,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
                 throw new UnvalidJwtTokenException("토큰이 없거나 유효하지 않은 토큰입니다.");
             }
 
-            String userId = jwtUtil.getSubject(token);
-            if (userId == null) {
+            String subject = jwtUtil.getSubject(token);
+            if (subject == null) {
                 throw new NoUserIdTokenException("토큰에 유저 식별자가 없습니다.");
             }
-
+            Long userId = Long.parseLong(subject);
             request.setAttribute("userId", userId);
             return true;
         }
