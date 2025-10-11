@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.quiz.controller;
 
+import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
@@ -18,6 +19,7 @@ import java.util.List;
 @Tag(name = "Quiz", description = "Quiz API")
 public class QuizController {
     private final QuizService quizService;
+    private final AttendanceService attendanceService;
 
     @PostMapping
     public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
@@ -39,9 +41,12 @@ public class QuizController {
         return quizService.getQuizInfo(id);
     }
 
+    @Authenticated
     @PostMapping("/{id}/submit")
-    public void submitQuizResult(@PathVariable Long id, @RequestBody QuizSubmitRequest request) {
-        quizService.submitQuizResult(id, request);
+    public void submitQuizResult(@PathVariable Long id, @RequestBody QuizSubmitRequest request,
+                                 @RequestAttribute Long userId) {
+        quizService.submitQuizResult(id, request, userId);
+        attendanceService.incrementTodaySolvedCount(userId);
     }
 
     @Authenticated
@@ -49,6 +54,5 @@ public class QuizController {
     public QuizReviewResponse getQuizReview(@RequestAttribute("userId") Long userId) {
         return quizService.getQuizReview(userId);
     }
-
 
 }
