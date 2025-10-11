@@ -13,6 +13,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByKakaoOauthId(Long kakaoOauthId);
 
+    Optional<User> findByUserId(Long userId);
+
     Page<User> findAll(Pageable pageable);
 
     // 랭킹 서비스 관련

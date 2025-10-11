@@ -22,8 +22,8 @@ public class AttendanceService {
     private final AsyncAttendanceService asyncAttendanceService;
 
     @Transactional
-    public void incrementTodaySolvedCount(Long kakaoOauthId) {
-        User user = userRepository.findByKakaoOauthId(kakaoOauthId)
+    public void incrementTodaySolvedCount(Long userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         user.increaseTodaySolvedCount();

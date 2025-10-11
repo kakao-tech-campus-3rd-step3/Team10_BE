@@ -29,16 +29,16 @@ public class AttendanceServiceTest {
 
     @Test
     public void testUpdateAttendanceForAllUsers() {
-        User user1 = userRepository.findById(1L).get();
-        User user2 = userRepository.findById(2L).get();
+        User user1 = userRepository.findByKakaoOauthId(1L).get();
+        User user2 = userRepository.findByKakaoOauthId(2L).get();
 
         for(int i=0; i<5; i++) {
-            attendanceService.incrementTodaySolvedCount(1L);
+            attendanceService.incrementTodaySolvedCount(user1.getUserId());
         }
 
         user2.increaseConsecutiveAttendance();
         for(int i=0; i<2; i++) {
-            attendanceService.incrementTodaySolvedCount(2L);
+            attendanceService.incrementTodaySolvedCount(user2.getUserId());
         }
 
         attendanceService.resetAttendanceForAllUsers();
