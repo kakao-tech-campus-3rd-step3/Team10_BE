@@ -22,13 +22,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findTop3ByOrderByRatingPointDesc();
 
     // 현재 유저 기준 바로 위 2명
-    List<User> findTop2ByRatingPointGreaterThanOrderByRatingPointAsc(int ratingPoint);
+    List<User> findTop2ByRatingPointGreaterThanOrderByRatingPointAsc(Integer  ratingPoint);
 
     // 현재 유저 기준 바로 아래 2명
-    List<User> findTop2ByRatingPointLessThanOrderByRatingPointDesc(int ratingPoint);
+    List<User> findTop2ByRatingPointLessThanOrderByRatingPointDesc(Integer  ratingPoint);
 
     // 연속 출석 기준 랭킹
     List<User> findTop3ByOrderByConsecutiveAttendanceDesc();
-    List<User> findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(int consecutiveAttendance);
-    List<User> findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(int consecutiveAttendance);
+    List<User> findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(Integer  consecutiveAttendance);
+    List<User> findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(Integer  consecutiveAttendance);
 }

@@ -22,7 +22,7 @@ public class UserRankingService {
     public RankingResponseDto getRatingPointRanking(Long userId) {
         User currentUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        int ratingPoint = currentUser.getRatingPoint();
+        Integer  ratingPoint = currentUser.getRatingPoint();
 
         List<User> topRankingUsers = userRepository.findTop3ByOrderByRatingPointDesc();
 
@@ -45,7 +45,7 @@ public class UserRankingService {
     public RankingResponseDto getConsecutiveAttendanceRanking(Long userId) {
         User currentUser = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        int consecutiveAttendance = currentUser.getConsecutiveAttendance();
+        Integer  consecutiveAttendance = currentUser.getConsecutiveAttendance();
 
         List<User> topRankingUsers = userRepository.findTop3ByOrderByConsecutiveAttendanceDesc();
 
