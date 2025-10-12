@@ -17,4 +17,10 @@ public class UserRankingController {
     public RankingResponseDto getRatingPointRanking(@RequestAttribute Long userId) {
         return userRankingService.getRatingPointRanking(userId);
     }
+
+    @Authenticated
+    @GetMapping("/consecutiveAttendance")
+    public RankingResponseDto getConsecutiveAttendanceRanking(@RequestAttribute Long userId) {
+        return userRankingService.getConsecutiveAttendanceRanking(userId);
+    }
 }

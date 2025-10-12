@@ -41,4 +41,27 @@ public class UserRankingService {
                 UserRankingDto.listFrom(adjacentUsers)
         );
     }
+
+    public RankingResponseDto getConsecutiveAttendanceRanking(Long userId) {
+        User currentUser = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        int consecutiveAttendance = currentUser.getConsecutiveAttendance();
+
+        List<User> topRankingUsers = userRepository.findTop3ByOrderByConsecutiveAttendanceDesc();
+
+        List<User> aboveUsers = userRepository.findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(consecutiveAttendance);
+        List<User> belowUsers = userRepository.findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(consecutiveAttendance);
+
+        Collections.reverse(aboveUsers); // 위쪽 유저 오름차순 정렬이므로 내림차순 맞춤
+
+        List<User> adjacentUsers = new ArrayList<>();
+        adjacentUsers.addAll(aboveUsers);
+        adjacentUsers.addAll(belowUsers);
+
+        return new RankingResponseDto(
+                new UserRankingDto(currentUser),
+                UserRankingDto.listFrom(topRankingUsers),
+                UserRankingDto.listFrom(adjacentUsers)
+        );
+    }
 }

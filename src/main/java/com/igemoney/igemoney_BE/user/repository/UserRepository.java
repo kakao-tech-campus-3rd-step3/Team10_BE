@@ -29,6 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 연속 출석 기준 랭킹
     List<User> findTop3ByOrderByConsecutiveAttendanceDesc();
-    List<User> findTop2ByRatingPointGreaterThanOrderByConsecutiveAttendanceAsc(int consecutiveAttendance);
-    List<User> findTop2ByRatingPointLessThanOrderByConsecutiveAttendanceDesc(int consecutiveAttendance);
+    List<User> findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(int consecutiveAttendance);
+    List<User> findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(int consecutiveAttendance);
 }
