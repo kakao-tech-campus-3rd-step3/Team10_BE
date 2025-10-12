@@ -1,9 +1,7 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
 
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
-import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
@@ -11,11 +9,13 @@ import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import com.igemoney.igemoney_BE.quiz.repository.UserQuizAttemptRepository;
 import com.igemoney.igemoney_BE.user.entity.User;
+import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service
@@ -23,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuizService {
 
+	private final UserRepository userRepository;
 	private final QuizRepository quizRepository;
 	private final TopicRepository topicRepository;
 	private final UserQuizAttemptRepository userQuizAttemptRepository;
@@ -60,15 +61,27 @@ public class QuizService {
 		return QuizResponse.from(quiz);
 	}
 
+	public QuizReviewResponse getQuizReview(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userId(userId);
+
+		List<ReviewQuizDetail> quizDetails = attempts.stream()
+			.map(ReviewQuizDetail::from)
+			.toList();
+
+		return new QuizReviewResponse(
+				!quizDetails.isEmpty(),
+				quizDetails
+		);
+	}
+
 
 	// todo: 인증인가 들어오면 userId도 받고 User 찾는 로직 채워넣기
-	public void submitQuizResult(Long quizId, QuizSubmitRequest request) {
+	public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
 		Quiz quiz = quizRepository.findById(quizId)
 			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
 
-		//	    User user = userRepository.findById()
-		//	        .orElseThrow(() -> new IllegalArgumentException("User not found"));
-		User user = new User();
+		User user = userRepository.findByUserId(userId)
+				.orElseThrow(() -> new NoSuchElementException("User not found"));
 
 		if(request.isCorrect()){
 			UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);

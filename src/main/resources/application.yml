@@ -1,39 +1,32 @@
 spring:
   application:
     name: igemoney_BE
-
-  # todo: .env 도입 시 배포단과 분리해 적용되는 스크립트 작성하기
-  datasource:
-    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/igemoney-mysql}
-    username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  profiles:
+    default: dev
 
   jpa:
-    hibernate:
-      # todo: 배포단에선 update로 바꾸기
-      ddl-auto: create
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
         format_sql: true
     defer-datasource-initialization: true
 
-  sql:
-    init:
-      mode: always
-      data-locations: classpath:data.sql
-      encoding: utf-8
-
-
 jwt:
-  secret: ${JWT_SECRET_KEY:thisIsTemporalDefaultJwtSecretKeyNotForDevButCIPassing}
-  expiration: 864000000 # 240 hours for dev
-
-kakao:
-  client-id: ${KAKAO_CLIENT_ID:5e45005280acdac029d1a800d58c709e}
-  redirect-uri: http://localhost:8080
+  secret: ${JWT_SECRET_KEY:this_is_dummy_jwt_secret_key_not_for_dev_but_ci_passing_lessssssssssgo}
+  expiration: 864000000 # 240h
 
 logging:
   pattern:
     dateformat: "yyyy-MM-dd HH:mm:ss.SSS, Asia/Seoul"
+
+
+kakao:
+  client-id: ${KAKAO_CLIENT_ID:dummy_kakao_client_id}
+  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080}
+
+springdoc:
+  swagger-ui:
+    path: /api-test
+    groups-order: DESC
+    operations-sorter: alpha
+  paths-to-match:
+    - /api/**
