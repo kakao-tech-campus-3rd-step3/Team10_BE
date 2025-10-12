@@ -3,25 +3,31 @@ package com.igemoney.igemoney_BE.attendance.service;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class AttendanceService {
 
-    private final UserRepository userRepository;
+    private static final int TODAY_TARGET_COUNT = 5;
 
-    public void incrementTodaySolvedCount(Long kakaoOauthId) {
-        User user = userRepository.findByKakaoOauthId(kakaoOauthId)
+    private final UserRepository userRepository;
+    private final AsyncAttendanceService asyncAttendanceService;
+
+    @Transactional
+    public void incrementTodaySolvedCount(Long userId) {
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
 
         user.increaseTodaySolvedCount();
-        if (user.getTodayCount() == 5) {
+        if (user.getTodayCount() == TODAY_TARGET_COUNT) {
             user.increaseConsecutiveAttendance();
         }
 
@@ -29,13 +35,14 @@ public class AttendanceService {
     }
 
     public void resetAttendanceForAllUsers() {
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user.getTodayCount() < 5) {
-                user.resetConsecutiveAttendance();
-            }
-            user.resetTodaySolvedCount();
+        int pageSize = 10000;
+        long total = userRepository.count();
+        int totalPages = (int) Math.ceil((double) total / pageSize);
+
+        for (int i = 0; i < totalPages; i++) {
+            Pageable pageable = PageRequest.of(i, pageSize, Sort.by("userId").ascending());
+            Page<User> page = userRepository.findAll(pageable);
+            asyncAttendanceService.resetAndSaveUsers(page.getContent());
         }
-        userRepository.saveAll(users);
     }
 }
