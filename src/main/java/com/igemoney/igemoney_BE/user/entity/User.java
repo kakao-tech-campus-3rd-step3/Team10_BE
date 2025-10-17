@@ -70,7 +70,7 @@ public class User extends BaseEntity {
         this.consecutiveAttendance = 0;
     }
 
-    public void setInvestmentPropensity(InvestmentPropensity propensity) {
+    public void updateInvestmentPropensity(InvestmentPropensity propensity) {
         this.investmentPropensity = propensity;
     }
 
