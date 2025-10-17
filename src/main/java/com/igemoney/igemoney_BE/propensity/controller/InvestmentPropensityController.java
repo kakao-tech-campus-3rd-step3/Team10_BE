@@ -16,7 +16,7 @@ public class InvestmentPropensityController {
     private final InvestmentPropensityService investmentPropensityService;
 
     @Authenticated
-    @PostMapping("/diagnose")
+    @PutMapping("/diagnose")
     public ResponseEntity<InvestmentPropensityResponseDto> diagnoseInvestmentPropensity(
             @RequestBody InvestmentPropensityRequestDto request,
             @RequestAttribute Long userId) {
