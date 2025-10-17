@@ -1,6 +1,5 @@
 package com.igemoney.igemoney_BE.propensity;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.Getter;
 
 @Getter

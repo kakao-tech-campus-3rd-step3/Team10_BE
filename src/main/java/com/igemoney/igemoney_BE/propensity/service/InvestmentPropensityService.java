@@ -25,7 +25,7 @@ public class InvestmentPropensityService {
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         InvestmentPropensity propensity = calculatePropensity(request.totalScore());
-        user.updateInvestmentPropensity(propensity);
+        user.setInvestmentPropensity(propensity);
 
         return new InvestmentPropensityResponseDto(propensity, request.totalScore());
     }
