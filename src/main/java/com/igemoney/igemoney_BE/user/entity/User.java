@@ -70,6 +70,10 @@ public class User extends BaseEntity {
         this.consecutiveAttendance = 0;
     }
 
+    public void updateInvestmentPropensity(InvestmentPropensity propensity) {
+        this.investmentPropensity = propensity;
+    }
+
 
     // todo: 푼 문제의 난이도 별 가중치를 다르게 적용시키는 비즈니스 로직 작성하기
     public void updateRatingPoint(Integer ratingPoint) {
