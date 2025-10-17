@@ -20,7 +20,7 @@ public class InvestmentPropensityService {
     private static final int ACTIVE_MAX = 80;
 
     @Transactional
-    public InvestmentPropensityResponseDto diagnoseInvestmentPropensity(Long userId, InvestmentPropensityRequestDto request) {
+    public InvestmentPropensityResponseDto updateInvestmentPropensity(Long userId, InvestmentPropensityRequestDto request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
