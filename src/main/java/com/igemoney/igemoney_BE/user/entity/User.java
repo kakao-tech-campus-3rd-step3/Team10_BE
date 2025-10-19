@@ -1,13 +1,12 @@
 package com.igemoney.igemoney_BE.user.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
+import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-// todo: 매일 자정마다 유저 엔티티 순회해 연속 출석일, 오늘 푼 문제수 재조정하는 스케줄링 로직 작성
 
 @Entity
 @Table(name = "user")
@@ -37,6 +36,10 @@ public class User extends BaseEntity {
     @Column
     private Boolean isActive;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "investment_propensity")
+    private InvestmentPropensity investmentPropensity;
+
 
     // 가입단에서 유저를 만들 때 사용하는 생성자
     @Builder
@@ -47,6 +50,7 @@ public class User extends BaseEntity {
         this.consecutiveAttendance = 1;
         this.todayCount = 0;
         this.isActive = true;
+        this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
     }
 
 
@@ -66,6 +70,9 @@ public class User extends BaseEntity {
         this.consecutiveAttendance = 0;
     }
 
+    public void updateInvestmentPropensity(InvestmentPropensity propensity) {
+        this.investmentPropensity = propensity;
+    }
 
     // todo: 푼 문제의 난이도 별 가중치를 다르게 적용시키는 비즈니스 로직 작성하기
     public void updateRatingPoint(Integer ratingPoint) {
