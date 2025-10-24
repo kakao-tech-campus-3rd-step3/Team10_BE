@@ -10,7 +10,7 @@ public record InvestmentPropensityResponseDto(
     public InvestmentPropensityResponseDto (InvestmentPropensity propensity, Integer totalScore) {
         this(
                 propensity,
-                propensity.getDescription(),
+                propensity.getLabel(),
                 totalScore
         );
     }
