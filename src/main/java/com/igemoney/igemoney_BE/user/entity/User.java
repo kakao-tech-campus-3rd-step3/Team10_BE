@@ -1,7 +1,7 @@
 package com.igemoney.igemoney_BE.user.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

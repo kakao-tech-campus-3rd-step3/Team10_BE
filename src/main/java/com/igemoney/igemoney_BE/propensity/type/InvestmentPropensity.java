@@ -1,4 +1,4 @@
-package com.igemoney.igemoney_BE.propensity;
+package com.igemoney.igemoney_BE.propensity.type;
 
 import lombok.Getter;
 
@@ -11,9 +11,9 @@ public enum InvestmentPropensity {
     DEFENSIVE("안정형"),
     UNDIAGNOSED("진단미확정");
 
-    private final String propensity;
+    private final String description;
 
-    InvestmentPropensity(String propensity) {
-        this.propensity = propensity;
+    InvestmentPropensity(String description) {
+        this.description = description;
     }
 }

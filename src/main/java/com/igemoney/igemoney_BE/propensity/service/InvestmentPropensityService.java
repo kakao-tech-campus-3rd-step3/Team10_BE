@@ -1,6 +1,6 @@
 package com.igemoney.igemoney_BE.propensity.service;
 
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityRequestDto;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityResponseDto;
 import com.igemoney.igemoney_BE.user.entity.User;

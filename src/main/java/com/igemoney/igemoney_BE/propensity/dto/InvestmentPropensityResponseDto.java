@@ -1,6 +1,6 @@
 package com.igemoney.igemoney_BE.propensity.dto;
 
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 
 public record InvestmentPropensityResponseDto(
         InvestmentPropensity propensity,
@@ -10,7 +10,7 @@ public record InvestmentPropensityResponseDto(
     public InvestmentPropensityResponseDto (InvestmentPropensity propensity, Integer totalScore) {
         this(
                 propensity,
-                propensity.getPropensity(),
+                propensity.getDescription(),
                 totalScore
         );
     }
