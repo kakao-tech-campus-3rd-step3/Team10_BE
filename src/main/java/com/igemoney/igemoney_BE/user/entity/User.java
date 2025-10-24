@@ -9,7 +9,11 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        indexes = {
+                @Index(name = "idx_rating_point", columnList = "ratingPoint"),
+                @Index(name = "idx_consecutive_attendance", columnList = "consecutiveAttendance")
+        })
 @Getter
 @NoArgsConstructor
 public class User extends BaseEntity {
