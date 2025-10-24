@@ -11,8 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "user",
         indexes = {
-                @Index(name = "idx_rating_point", columnList = "ratingPoint"),
-                @Index(name = "idx_consecutive_attendance", columnList = "consecutiveAttendance")
+                @Index(name = "idx_consecutive_attendance_desc", columnList = "consecutiveAttendance DESC")
         })
 @Getter
 @NoArgsConstructor
