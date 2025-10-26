@@ -1,6 +1,6 @@
 package com.igemoney.igemoney_BE.attendance.dto;
 
-public record AttendanceResponseDto(
+public record SolvedCountResponseDto(
         boolean attendanceToday,
-        int todaySolvedCount
+        Integer todaySolvedCount
 ) {}
