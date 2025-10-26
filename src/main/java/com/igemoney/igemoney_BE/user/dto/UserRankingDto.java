@@ -1,10 +1,5 @@
 package com.igemoney.igemoney_BE.user.dto;
 
-import com.igemoney.igemoney_BE.user.entity.User;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public record UserRankingDto(
         String nickname,
         Integer point,

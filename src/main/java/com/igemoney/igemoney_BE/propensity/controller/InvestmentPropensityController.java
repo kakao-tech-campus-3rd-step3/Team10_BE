@@ -4,6 +4,7 @@ import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityRequestDto;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityResponseDto;
 import com.igemoney.igemoney_BE.propensity.service.InvestmentPropensityService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class InvestmentPropensityController {
     private final InvestmentPropensityService investmentPropensityService;
 
     @Authenticated
+    @Operation(summary = "투자성향 진단 등급 결과 측정")
     @PostMapping("/diagnose")
     public ResponseEntity<InvestmentPropensityResponseDto> diagnoseInvestmentPropensity(
             @RequestBody InvestmentPropensityRequestDto request,
