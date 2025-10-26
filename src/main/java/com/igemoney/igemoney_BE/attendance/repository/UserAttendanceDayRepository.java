@@ -10,4 +10,6 @@ import java.util.List;
 public interface UserAttendanceDayRepository extends JpaRepository<UserAttendanceDay, Long> {
     List<UserAttendanceDay> findByUserUserIdAndAttendanceDateBetweenOrderByAttendanceDateAsc(
             Long userId, LocalDate start, LocalDate end);
+
+    boolean existsByUserUserIdAndAttendanceDate(Long userId, LocalDate date);
 }
