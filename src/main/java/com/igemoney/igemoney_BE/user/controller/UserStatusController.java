@@ -2,10 +2,7 @@ package com.igemoney.igemoney_BE.user.controller;
 
 
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
-import com.igemoney.igemoney_BE.user.dto.GetConsecutiveAttendanceResponse;
-import com.igemoney.igemoney_BE.user.dto.GetMyRankingResponse;
-import com.igemoney.igemoney_BE.user.dto.GetUserNicknameResponse;
-import com.igemoney.igemoney_BE.user.dto.TodayAttendanceResponse;
+import com.igemoney.igemoney_BE.user.dto.*;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -53,4 +50,10 @@ public class UserStatusController {
         return userStatusService.getMyRanking(userId);
     }
 
+    @Authenticated
+    @Operation(summary = "내 투자성향 조회")
+    @GetMapping("/me/propensity")
+    public GetMyInvestmentPropensityResponseDto getMyInvestmentPropensity(@RequestAttribute Long userId) {
+        return userStatusService.getMyInvestmentPropensity(userId);
+    }
 }
