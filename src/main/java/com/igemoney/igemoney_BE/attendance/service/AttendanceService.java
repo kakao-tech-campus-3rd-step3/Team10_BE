@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.attendance.service;
 
+import com.igemoney.igemoney_BE.attendance.dto.UserAttendanceStatusResponseDto;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,14 @@ public class AttendanceService {
             Page<User> page = userRepository.findAll(pageable);
             asyncAttendanceService.resetAndSaveUsers(page.getContent());
         }
+    }
+
+    public UserAttendanceStatusResponseDto getUserAttendance(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new UserAttendanceStatusResponseDto(
+                user.getTodayCount(),
+                user.getConsecutiveAttendance()
+        );
     }
 }
