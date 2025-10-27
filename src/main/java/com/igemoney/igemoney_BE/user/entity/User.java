@@ -1,7 +1,7 @@
 package com.igemoney.igemoney_BE.user.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,13 +9,17 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        indexes = {
+                @Index(name = "idx_consecutive_attendance_desc", columnList = "consecutive_attendance DESC")
+        })
 @Getter
 @NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "nickname", unique = true, nullable = false)
@@ -24,16 +28,16 @@ public class User extends BaseEntity {
     @Column(name = "kakao_oauth_id", unique = true)
     private Long kakaoOauthId;
 
-    @Column
+    @Column(name = "rating_point")
     private Integer ratingPoint;
 
-    @Column
+    @Column(name = "consecutive_attendance")
     private Integer consecutiveAttendance;
 
-    @Column
+    @Column(name = "today_count")
     private Integer todayCount;
 
-    @Column
+    @Column(name = "is_active")
     private Boolean isActive;
 
     @Enumerated(EnumType.STRING)

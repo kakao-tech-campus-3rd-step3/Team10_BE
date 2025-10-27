@@ -1,5 +1,8 @@
 package com.igemoney.igemoney_BE.attendance.service;
 
+import com.igemoney.igemoney_BE.attendance.dto.UserAttendanceStatusResponseDto;
+import com.igemoney.igemoney_BE.attendance.entity.UserAttendanceDay;
+import com.igemoney.igemoney_BE.attendance.repository.UserAttendanceDayRepository;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.NoSuchElementException;
 
 @Service
@@ -19,6 +23,7 @@ public class AttendanceService {
     private static final int TODAY_TARGET_COUNT = 5;
 
     private final UserRepository userRepository;
+    private final UserAttendanceDayRepository attendanceRepository;
     private final AsyncAttendanceService asyncAttendanceService;
 
     @Transactional
@@ -29,6 +34,11 @@ public class AttendanceService {
         user.increaseTodaySolvedCount();
         if (user.getTodayCount() == TODAY_TARGET_COUNT) {
             user.increaseConsecutiveAttendance();
+
+            LocalDate today = LocalDate.now();
+            if (!attendanceRepository.existsByUserUserIdAndAttendanceDate(userId, today)) {
+                attendanceRepository.save(new UserAttendanceDay(user, today));
+            }
         }
 
         userRepository.save(user);
@@ -44,5 +54,14 @@ public class AttendanceService {
             Page<User> page = userRepository.findAll(pageable);
             asyncAttendanceService.resetAndSaveUsers(page.getContent());
         }
+    }
+
+    public UserAttendanceStatusResponseDto getUserAttendance(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("User not found"));
+        return new UserAttendanceStatusResponseDto(
+                user.getTodayCount(),
+                user.getConsecutiveAttendance()
+        );
     }
 }

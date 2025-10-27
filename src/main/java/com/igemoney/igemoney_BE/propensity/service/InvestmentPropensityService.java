@@ -1,6 +1,6 @@
 package com.igemoney.igemoney_BE.propensity.service;
 
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityRequestDto;
 import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityResponseDto;
 import com.igemoney.igemoney_BE.user.entity.User;
@@ -24,17 +24,9 @@ public class InvestmentPropensityService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
-        InvestmentPropensity propensity = calculatePropensity(request.totalScore());
+        InvestmentPropensity propensity = InvestmentPropensity.fromScore(request.totalScore());
         user.updateInvestmentPropensity(propensity);
 
         return new InvestmentPropensityResponseDto(propensity, request.totalScore());
-    }
-
-    private InvestmentPropensity calculatePropensity(Integer totalScore) {
-        if (totalScore <= DEFENSIVE_MAX) return InvestmentPropensity.DEFENSIVE;
-        if (totalScore <= CONSERVATIVE_MAX) return InvestmentPropensity.CONSERVATIVE;
-        if (totalScore <= BALANCED_MAX) return InvestmentPropensity.BALANCED;
-        if (totalScore <= ACTIVE_MAX) return InvestmentPropensity.ACTIVE;
-        return InvestmentPropensity.AGGRESSIVE;
     }
 }
