@@ -60,6 +60,7 @@ public class UserQuizAttempt extends BaseEntity {
 		return UserQuizAttempt.builder()
 			.user(user)
 			.quiz(quiz)
+			.isCompleted(true)
 			.isCorrect(true).build();
 	}
 
