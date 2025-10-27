@@ -8,6 +8,8 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -31,4 +33,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findTop3ByOrderByConsecutiveAttendanceDesc();
     List<User> findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(Integer  consecutiveAttendance);
     List<User> findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(Integer  consecutiveAttendance);
+
+    // 랭킹 순위 조회
+    @Query("SELECT COUNT(u) FROM User u WHERE u.ratingPoint > :ratingPoint")
+    Long countUsersWithHigherRatingPoint(@Param("ratingPoint") Integer ratingPoint);
+
+    @Query("SELECT COUNT(u) FROM User u WHERE u.consecutiveAttendance > :consecutiveAttendance")
+    Long countUsersWithHigherConsecutiveAttendance(@Param("consecutiveAttendance") Integer consecutiveAttendance);
 }
