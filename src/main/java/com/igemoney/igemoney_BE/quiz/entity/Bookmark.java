@@ -27,6 +27,7 @@ public class Bookmark extends BaseEntity {
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 
+    @Builder
     public Bookmark(User user, Quiz quiz) {
         this.user = user;
         this.quiz = quiz;
