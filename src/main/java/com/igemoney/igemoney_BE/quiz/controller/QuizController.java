@@ -2,11 +2,14 @@ package com.igemoney.igemoney_BE.quiz.controller;
 
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.service.BookmarkService;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -20,25 +23,27 @@ import java.util.List;
 public class QuizController {
     private final QuizService quizService;
     private final AttendanceService attendanceService;
+    private final BookmarkService bookmarkService;
 
-    @PostMapping
-    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
-        return quizService.createQuiz(quiz);
-    }
+//    @PostMapping
+//    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
+//        return quizService.createQuiz(quiz);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteQuiz(@PathVariable Long id) {
+//        quizService.deleteQuiz(id);
+//    }
 
-    @DeleteMapping("/{id}")
-    public void deleteQuiz(@PathVariable Long id) {
-        quizService.deleteQuiz(id);
-    }
+//    @GetMapping
+////    public List<QuizResponse> getAllQuizzes() {
+////        return quizService.getAll();
+////    }
 
-    @GetMapping
-    public List<QuizResponse> getAllQuizzes() {
-        return quizService.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public QuizResponse getQuiz(@PathVariable Long id) {
-        return quizService.getQuizInfo(id);
+    @Authenticated
+    @GetMapping("/{quizId}")
+    public QuizResponse getQuiz(@PathVariable Long quizId, @RequestAttribute Long userId) {
+        return quizService.getQuizInfo(quizId, userId);
     }
 
     @Authenticated
@@ -53,6 +58,21 @@ public class QuizController {
     @GetMapping("/review")
     public QuizReviewResponse getQuizReview(@RequestAttribute("userId") Long userId) {
         return quizService.getQuizReview(userId);
+    }
+
+
+    @Authenticated
+    @GetMapping("/bookmark")
+    @Operation(summary = "북마크 목록 조회")
+    public BookmarkListResponse getBookmarkList(@RequestAttribute("userId") Long userId) {
+        return bookmarkService.getBookmarkList(userId);
+    }
+
+    @Authenticated
+    @PostMapping("/bookmark/{quizId}")
+    @Operation(summary = "북마크 추가/삭제 토글")
+    public void addBookmark(@RequestAttribute("userId") Long userId, @PathVariable Long quizId) {
+        bookmarkService.toggleBookmark(userId, quizId);
     }
 
 }
