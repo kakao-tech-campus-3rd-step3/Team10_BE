@@ -25,24 +25,25 @@ public class QuizController {
     private final AttendanceService attendanceService;
     private final BookmarkService bookmarkService;
 
-    @PostMapping
-    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
-        return quizService.createQuiz(quiz);
-    }
+//    @PostMapping
+//    public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
+//        return quizService.createQuiz(quiz);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteQuiz(@PathVariable Long id) {
+//        quizService.deleteQuiz(id);
+//    }
 
-    @DeleteMapping("/{id}")
-    public void deleteQuiz(@PathVariable Long id) {
-        quizService.deleteQuiz(id);
-    }
+//    @GetMapping
+////    public List<QuizResponse> getAllQuizzes() {
+////        return quizService.getAll();
+////    }
 
-    @GetMapping
-    public List<QuizResponse> getAllQuizzes() {
-        return quizService.getAll();
-    }
-
-    @GetMapping("/{id}")
-    public QuizResponse getQuiz(@PathVariable Long id) {
-        return quizService.getQuizInfo(id);
+    @Authenticated
+    @GetMapping("/{quizId}")
+    public QuizResponse getQuiz(@PathVariable Long quizId, @RequestAttribute Long userId) {
+        return quizService.getQuizInfo(quizId, userId);
     }
 
     @Authenticated

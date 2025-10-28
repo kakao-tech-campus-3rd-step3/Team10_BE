@@ -4,8 +4,10 @@ package com.igemoney.igemoney_BE.quiz.service;
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
+import com.igemoney.igemoney_BE.quiz.entity.Bookmark;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
+import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
@@ -28,38 +30,45 @@ public class QuizService {
 	private final QuizRepository quizRepository;
 	private final TopicRepository topicRepository;
 	private final UserQuizAttemptRepository userQuizAttemptRepository;
+	private final BookmarkRepository bookmarkRepository;
 
 
-	public QuizResponse createQuiz(QuizCreateRequest request) {
-		QuizTopic topic = topicRepository.findById(request.topicId())
-			.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
+//	public QuizResponse createQuiz(QuizCreateRequest request) {
+//		QuizTopic topic = topicRepository.findById(request.topicId())
+//			.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
+//
+//		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
+//		Quiz saved = quizRepository.save(quiz);
+//
+//		return QuizResponse.from(saved);
+//	}
+//
+//
+//	public void deleteQuiz(Long id) {
+//		quizRepository.deleteById(id);
+//	}
 
-		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
-		Quiz saved = quizRepository.save(quiz);
 
-		return QuizResponse.from(saved);
-	}
-
-
-	public void deleteQuiz(Long id) {
-		quizRepository.deleteById(id);
-	}
+//	@Transactional(readOnly = true)
+//	public List<QuizResponse> getAll() {
+//		return quizRepository.findAll().stream()
+//			.map(QuizResponse::from)
+//			.toList();
+//	}
 
 
 	@Transactional(readOnly = true)
-	public List<QuizResponse> getAll() {
-		return quizRepository.findAll().stream()
-			.map(QuizResponse::from)
-			.toList();
-	}
-
-
-	@Transactional(readOnly = true)
-	public QuizResponse getQuizInfo(Long id) {
-		Quiz quiz = quizRepository.findById(id)
+	public QuizResponse getQuizInfo(Long quizId, Long userId) {
+		Quiz quiz = quizRepository.findById(quizId)
 			.orElseThrow(QuizNotFoundException::new);
 
-		return QuizResponse.from(quiz);
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(UserNotFoundException::new);
+
+		boolean isBookmarked = bookmarkRepository.existsByUserAndQuiz(user, quiz);
+		boolean isSolved = userQuizAttemptRepository.existsByUserAndQuizAndIsCompletedTrue(user, quiz);
+
+		return QuizResponse.from(quiz, isBookmarked, isSolved);
 	}
 
 	@Transactional(readOnly = true)
