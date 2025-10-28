@@ -78,7 +78,6 @@ public class QuizService {
 	}
 
 
-	@Transactional(readOnly = true)
 	public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
 		Quiz quiz = quizRepository.findById(quizId)
 			.orElseThrow(QuizNotFoundException::new);
