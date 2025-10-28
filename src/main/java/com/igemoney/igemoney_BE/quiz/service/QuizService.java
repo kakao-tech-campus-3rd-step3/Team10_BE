@@ -6,7 +6,6 @@ import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
-import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;

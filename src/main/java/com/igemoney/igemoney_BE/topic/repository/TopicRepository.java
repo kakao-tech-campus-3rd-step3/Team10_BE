@@ -38,7 +38,7 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
             select count(uqa)
             from UserQuizAttempt uqa
             where uqa.quiz.id = q.id
-              and uqa.id = :userId
+              and uqa.user.userId = :userId
               and uqa.isCompleted = true
         ) > 0 then true else false end,
       case when (
@@ -46,7 +46,7 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
           from Bookmark b
           where b.quiz.id = q.id
             and b.user.userId = :userId
-      ) > 0 then true else false end\s
+      ) > 0 then true else false end
     )
     from Quiz q
     where q.topic.id = :topicId
