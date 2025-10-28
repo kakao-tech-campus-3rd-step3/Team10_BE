@@ -9,7 +9,7 @@ public record BookmarkResponse(
 ) {
     public static BookmarkResponse of(Bookmark bookmark) {
         return new BookmarkResponse(
-            bookmark.getId(),
+            bookmark.getQuiz().getId(),
             bookmark.getQuiz().getQuestionTitle(),
             bookmark.getQuiz().getTopic().getName()
         );
