@@ -7,6 +7,7 @@ import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
+import com.igemoney.igemoney_BE.quiz.service.BookmarkService;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,6 +23,7 @@ import java.util.List;
 public class QuizController {
     private final QuizService quizService;
     private final AttendanceService attendanceService;
+    private final BookmarkService bookmarkService;
 
     @PostMapping
     public QuizResponse createQuiz(@RequestBody QuizCreateRequest quiz){
@@ -62,7 +64,14 @@ public class QuizController {
     @GetMapping("/bookmark")
     @Operation(summary = "북마크 목록 조회")
     public BookmarkListResponse getBookmarkList(@RequestAttribute("userId") Long userId) {
-        return quizService.getBookmarkList(userId);
+        return bookmarkService.getBookmarkList(userId);
+    }
+
+    @Authenticated
+    @PostMapping("/bookmark/{quizId}")
+    @Operation(summary = "북마크 추가/삭제 토글")
+    public void addBookmark(@RequestAttribute("userId") Long userId, @PathVariable Long quizId) {
+        bookmarkService.toggleBookmark(userId, quizId);
     }
 
 }

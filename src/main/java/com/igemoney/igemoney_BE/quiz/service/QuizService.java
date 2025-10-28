@@ -1,9 +1,9 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
 
+import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
-import com.igemoney.igemoney_BE.quiz.entity.Bookmark;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Service
@@ -30,7 +29,6 @@ public class QuizService {
 	private final QuizRepository quizRepository;
 	private final TopicRepository topicRepository;
 	private final UserQuizAttemptRepository userQuizAttemptRepository;
-	private final BookmarkRepository bookmarkRepository;
 
 
 	public QuizResponse createQuiz(QuizCreateRequest request) {
@@ -60,7 +58,7 @@ public class QuizService {
 	@Transactional(readOnly = true)
 	public QuizResponse getQuizInfo(Long id) {
 		Quiz quiz = quizRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
+			.orElseThrow(QuizNotFoundException::new);
 
 		return QuizResponse.from(quiz);
 	}
@@ -83,10 +81,10 @@ public class QuizService {
 	@Transactional(readOnly = true)
 	public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
 		Quiz quiz = quizRepository.findById(quizId)
-			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
+			.orElseThrow(QuizNotFoundException::new);
 
 		User user = userRepository.findByUserId(userId)
-				.orElseThrow(() -> new NoSuchElementException("User not found"));
+				.orElseThrow(UserNotFoundException::new);
 
 		if(request.isCorrect()){
 			UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);
@@ -97,16 +95,4 @@ public class QuizService {
 		}
 	}
 
-	@Transactional(readOnly = true)
-	public BookmarkListResponse getBookmarkList(Long userId) {
-		User user = userRepository.findById(userId)
-			.orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
-
-		List<BookmarkResponse> items = bookmarkRepository.findAllByUserIdJoinWithQuiz(userId)
-			.stream()
-			.map(BookmarkResponse::of)
-			.toList();
-
-		return BookmarkListResponse.of(items);
-	}
 }
