@@ -2,11 +2,13 @@ package com.igemoney.igemoney_BE.quiz.controller;
 
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
+import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
 import com.igemoney.igemoney_BE.quiz.service.QuizService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +55,14 @@ public class QuizController {
     @GetMapping("/review")
     public QuizReviewResponse getQuizReview(@RequestAttribute("userId") Long userId) {
         return quizService.getQuizReview(userId);
+    }
+
+
+    @Authenticated
+    @GetMapping("/bookmark")
+    @Operation(summary = "북마크 목록 조회")
+    public BookmarkListResponse getBookmarkList(@RequestAttribute("userId") Long userId) {
+        return quizService.getBookmarkList(userId);
     }
 
 }
