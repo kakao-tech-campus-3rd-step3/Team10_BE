@@ -44,8 +44,8 @@ public record QuizResponse(
             quiz.getCorrectRate(),
             quiz.getTopic().getId(),
             quiz.getTopic().getName(),
-            isBookmarked,
-            isSolved
+            isSolved,
+            isBookmarked
 
         );
     }
