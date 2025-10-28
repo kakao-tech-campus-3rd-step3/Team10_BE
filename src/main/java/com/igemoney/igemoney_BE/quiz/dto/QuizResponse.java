@@ -19,10 +19,10 @@ public record QuizResponse(
         Long topicId,
         String topicName,
 
-        LocalDateTime createdAt,
-        LocalDateTime updatedAt
+        boolean isSolved,
+        boolean isBookmarked
 ) {
-    public static QuizResponse from(Quiz quiz) {
+    public static QuizResponse from(Quiz quiz, boolean isBookmarked, boolean isSolved) {
         com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
         JsonNode jsonNode = null;
         try {
@@ -34,18 +34,19 @@ public record QuizResponse(
         }
 
         return new QuizResponse(
-                quiz.getId(),
-                quiz.getQuestionTitle(),
-                quiz.getQuestionType().name(),
-                jsonNode,
-                quiz.getDifficultyLevel().name(),
-                quiz.getExplanation(),
-                quiz.getQuestionOrder(),
-                quiz.getCorrectRate(),
-                quiz.getTopic().getId(),
-                quiz.getTopic().getName(),
-                quiz.getCreatedAt(),
-                quiz.getUpdatedAt()
+            quiz.getId(),
+            quiz.getQuestionTitle(),
+            quiz.getQuestionType().name(),
+            jsonNode,
+            quiz.getDifficultyLevel().name(),
+            quiz.getExplanation(),
+            quiz.getQuestionOrder(),
+            quiz.getCorrectRate(),
+            quiz.getTopic().getId(),
+            quiz.getTopic().getName(),
+            isBookmarked,
+            isSolved
+
         );
     }
 }

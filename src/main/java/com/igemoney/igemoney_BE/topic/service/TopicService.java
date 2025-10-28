@@ -1,10 +1,15 @@
 package com.igemoney.igemoney_BE.topic.service;
 
+import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
+import com.igemoney.igemoney_BE.quiz.entity.Quiz;
 import com.igemoney.igemoney_BE.topic.dto.*;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
 import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
+import com.igemoney.igemoney_BE.user.entity.User;
+import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TopicService {
     private final TopicRepository topicRepository;
+    private final UserRepository userRepository;
 
     public TopicResponse createTopic(TopicCreateRequest request) {
         QuizTopic saved = topicRepository.save(TopicCreateRequest.toEntity(request));
@@ -39,6 +45,12 @@ public class TopicService {
     }
 
     public TopicQuizList getTopicQuizzes(Long userId, Long topicId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+
+        QuizTopic topic = topicRepository.findById(topicId)
+            .orElseThrow(() -> new TopicNotFoundException(topicId));
+
         List<TopicQuizResponse> responses = topicRepository.findTopicQuizzes(userId, topicId);
         return new TopicQuizList(responses);
     }
