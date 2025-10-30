@@ -6,7 +6,7 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/igemoney-mysql}
     username: ${DB_USERNAME:root}
-    password: ${DB_PASSWORD:1234}
+    password: ${DB_PASSWORD:votmdnjem1234!}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
