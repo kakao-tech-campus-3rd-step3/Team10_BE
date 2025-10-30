@@ -30,4 +30,8 @@ public enum InvestmentPropensity {
                 .findFirst()
                 .orElse(UNDIAGNOSED);
     }
+
+    public boolean isDiagnosed() {
+        return this != UNDIAGNOSED;
+    }
 }
