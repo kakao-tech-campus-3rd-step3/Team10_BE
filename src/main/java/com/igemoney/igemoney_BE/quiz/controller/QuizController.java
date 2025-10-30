@@ -36,9 +36,9 @@ public class QuizController {
 //    }
 
 //    @GetMapping
-////    public List<QuizResponse> getAllQuizzes() {
-////        return quizService.getAll();
-////    }
+//    public List<QuizResponse> getAllQuizzes() {
+//        return quizService.getAll();
+//    }
 
     @Authenticated
     @GetMapping("/{quizId}")
