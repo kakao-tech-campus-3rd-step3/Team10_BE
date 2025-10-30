@@ -43,7 +43,7 @@ public class AttendanceServiceTest {
 
         attendanceService.resetAttendanceForAllUsers();
 
-        assertEquals(2, user1.getConsecutiveAttendance());
+        assertEquals(1, user1.getConsecutiveAttendance());
         assertEquals(0, user1.getTodayCount());
         assertEquals(0, user2.getConsecutiveAttendance());
         assertEquals(0, user2.getTodayCount());

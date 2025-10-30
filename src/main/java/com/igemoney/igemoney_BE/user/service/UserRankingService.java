@@ -58,14 +58,15 @@ public class UserRankingService {
 
         Collections.reverse(aboveUsers); // 위쪽 유저 오름차순 -> 내림차순
 
-        List<UserRankingDto> adjacentUsersRankingDtos = new ArrayList<>();
+        List<UserRankingDto> aboveDtos = new ArrayList<>();
+        List<UserRankingDto> belowDtos = new ArrayList<>();
 
         // 위쪽 유저
         for (int i = 0; i < aboveUsers.size(); i++) {
             User u = aboveUsers.get(i);
             Long rank = myRank - (aboveUsers.size() - i);
             Integer point = (rankingType == RankingType.RATING_POINT) ? u.getRatingPoint() : u.getConsecutiveAttendance();
-            adjacentUsersRankingDtos.add(new UserRankingDto(u.getNickname(), point, rank));
+            aboveDtos.add(new UserRankingDto(u.getNickname(), point, rank));
         }
 
         // 아래쪽 유저
@@ -73,7 +74,7 @@ public class UserRankingService {
             User u = belowUsers.get(i);
             Long rank = myRank + i + 1L;
             Integer point = (rankingType == RankingType.RATING_POINT) ? u.getRatingPoint() : u.getConsecutiveAttendance();
-            adjacentUsersRankingDtos.add(new UserRankingDto(u.getNickname(), point, rank));
+            belowDtos.add(new UserRankingDto(u.getNickname(), point, rank));
         }
 
         // 현재 유저 DTO
@@ -90,6 +91,6 @@ public class UserRankingService {
             topUsersRankingDtos.add(new UserRankingDto(u.getNickname(), point, rank));
         }
 
-        return new RankingResponseDto(currentUserRankingDto, topUsersRankingDtos, adjacentUsersRankingDtos);
+        return new RankingResponseDto(currentUserRankingDto, topUsersRankingDtos, aboveDtos, belowDtos);
     }
 }

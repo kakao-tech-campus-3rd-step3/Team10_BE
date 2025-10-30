@@ -68,8 +68,7 @@ public class UserStatusService {
                 .orElseThrow(() -> new UserNotFoundException("존재하지 않는 유저입니다."));
         InvestmentPropensity userInvestmentPropensity = user.getInvestmentPropensity();
         return new GetMyInvestmentPropensityResponseDto(
-                userInvestmentPropensity,
-                userInvestmentPropensity.getLabel()
+                userInvestmentPropensity
         );
     }
 }
