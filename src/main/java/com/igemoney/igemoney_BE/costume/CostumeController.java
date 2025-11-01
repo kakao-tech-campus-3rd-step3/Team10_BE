@@ -6,6 +6,8 @@ import com.igemoney.igemoney_BE.costume.dto.CostumeListResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,12 @@ public class CostumeController {
     @GetMapping
     public CostumeListResponse getCostumeList(@RequestAttribute Long userId) {
         return costumeService.getCostumeList(userId);
+    }
+
+    @Authenticated
+    @PostMapping("/{costumeId}")
+    public void wear(@PathVariable Long costumeId, @RequestAttribute Long userId) {
+        costumeService.wearCostume(userId, costumeId);
     }
 
 }

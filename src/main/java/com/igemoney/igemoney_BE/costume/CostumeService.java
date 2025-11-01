@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class CostumeService {
 
     private final UserRepository userRepository;
@@ -23,6 +23,7 @@ public class CostumeService {
     @Value("${app.costume.public-url-prefix:/costumes/}")
     private String publicPrefix;
 
+    @Transactional(readOnly = true)
     public CostumeListResponse getCostumeList(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
@@ -43,5 +44,13 @@ public class CostumeService {
             })
             .toList();
         return new CostumeListResponse(items);
+    }
+
+    public void wearCostume(Long userId, Long costumeId) {
+        User user = userRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+
+        CostumeType.fromId(costumeId); // costumdId값 유효성 검증용 호출
+        user.updateWornCostumeId(costumeId);
     }
 }
