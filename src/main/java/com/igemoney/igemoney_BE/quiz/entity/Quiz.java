@@ -46,6 +46,11 @@ public class Quiz extends BaseEntity {
     @Column(name = "correct_rate", precision = 5, scale = 2)
     private BigDecimal correctRate;
 
+    @Transient
+    private int correctCount;
+
+    @Transient
+    private int incorrectCount;
 
     @Builder
     public Quiz(QuizTopic topic, String questionTitle, QuestionType questionType, String questionData, DifficultyLevel difficultyLevel, String explanation, Integer questionOrder) {
@@ -57,6 +62,10 @@ public class Quiz extends BaseEntity {
         this.explanation = explanation;
         this.questionOrder = questionOrder;
         this.correctRate = BigDecimal.ZERO;
+        this.correctCount = 0;
+        this.incorrectCount = 0;
     }
-
+    public void updateCorrectRate(BigDecimal newCorrectRate) {
+        this.correctRate = newCorrectRate;
+    }
 }
