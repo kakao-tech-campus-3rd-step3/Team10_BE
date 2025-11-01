@@ -16,6 +16,12 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(uniqueConstraints = {
+		@UniqueConstraint(
+				name = "uk_user_quiz",
+				columnNames = {"user_id", "quiz_id"}
+		)
+})
 public class UserQuizAttempt extends BaseEntity {
 
 	@Id
