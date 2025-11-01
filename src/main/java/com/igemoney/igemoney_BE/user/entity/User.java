@@ -54,7 +54,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.kakaoOauthId = oauthId;
         this.ratingPoint = 0;
-        this.consecutiveAttendance = 1;
+        this.consecutiveAttendance = 0;
         this.todayCount = 0;
         this.isActive = true;
         this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
