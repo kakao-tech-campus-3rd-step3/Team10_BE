@@ -44,6 +44,9 @@ public class User extends BaseEntity {
     @Column(name = "investment_propensity")
     private InvestmentPropensity investmentPropensity;
 
+    @Column
+    private Long wornCostumeId; // null = 기본 코스튬
+
 
     // 가입단에서 유저를 만들 때 사용하는 생성자
     @Builder
@@ -55,6 +58,7 @@ public class User extends BaseEntity {
         this.todayCount = 0;
         this.isActive = true;
         this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
+        this.wornCostumeId = null;
     }
 
 
@@ -76,6 +80,10 @@ public class User extends BaseEntity {
 
     public void updateInvestmentPropensity(InvestmentPropensity propensity) {
         this.investmentPropensity = propensity;
+    }
+
+    public void updateWornCostumeId(Long costumeId) {
+        this.wornCostumeId = costumeId;
     }
 
     // todo: 푼 문제의 난이도 별 가중치를 다르게 적용시키는 비즈니스 로직 작성하기
