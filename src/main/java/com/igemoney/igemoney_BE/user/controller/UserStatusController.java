@@ -56,4 +56,11 @@ public class UserStatusController {
     public GetMyInvestmentPropensityResponseDto getMyInvestmentPropensity(@RequestAttribute Long userId) {
         return userStatusService.getMyInvestmentPropensity(userId);
     }
+
+    @Authenticated
+    @GetMapping("/me/costume")
+    @Operation(summary = "현재 내 콩식이 이미지 조회")
+    public GetMyKongSikUrl getMyKongSikUrl(@RequestAttribute Long userId) {
+        return userStatusService.getMyKongSikUrl(userId);
+    }
 }
