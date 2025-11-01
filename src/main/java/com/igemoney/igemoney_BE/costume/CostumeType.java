@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CostumeType {
+    DEFAULT(0L, "default"),
     BUNNY(1L, "bunny"),
     COWBOY(2L, "cowboy"),
     DEVIL(3L, "devil"),

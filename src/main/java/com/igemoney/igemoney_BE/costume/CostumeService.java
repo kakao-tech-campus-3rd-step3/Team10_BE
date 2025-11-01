@@ -26,9 +26,18 @@ public class CostumeService {
         Long wornId = user.getWornCostumeId();
 
         List<CostumeItem> items = Arrays.stream(CostumeType.values())
-            .map(costumeType -> {
-                boolean isWorn = wornId.equals(costumeType.getId());
-                String fileName = cost
+            .map(ct -> {
+                Long ctId = ct.getId();
+                boolean isWorn = wornId.equals(ct.getId());
+                String fileName;
+                if (ctId > 0L){
+                    fileName = ct.getOffFileUrl();
+                } else {
+                    fileName = "아무것도 안입은 콩식이 이미지";
+                }
+                return new CostumeItem(ctId, isWorn, fileName);
             })
+            .toList();
+        return new CostumeListResponse(items);
     }
 }
