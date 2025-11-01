@@ -9,6 +9,7 @@ import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class CostumeService {
 
     private final UserRepository userRepository;
+
+    @Value("${app.costume.public-url-prefix:/costumes/}")
+    private String publicPrefix;
 
     public CostumeListResponse getCostumeList(Long userId) {
         User user = userRepository.findById(userId)
@@ -35,7 +39,7 @@ public class CostumeService {
                 } else {
                     fileName = "아무것도 안입은 콩식이 이미지";
                 }
-                return new CostumeItem(ctId, isWorn, fileName);
+                return new CostumeItem(ctId, isWorn, publicPrefix+fileName);
             })
             .toList();
         return new CostumeListResponse(items);
