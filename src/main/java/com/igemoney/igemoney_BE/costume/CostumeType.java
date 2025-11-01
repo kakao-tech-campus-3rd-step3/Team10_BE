@@ -30,7 +30,7 @@ public enum CostumeType {
     public static CostumeType fromId(Long id) {
         return Arrays.stream(values())
             .filter(v -> v.id.equals(id))
-            .findFirst() // Optional<CostumeType> 반환
+            .findFirst()
             .orElseThrow(() -> new IllegalArgumentException(id+ "는 매칭되지 않는 코스튬 ID입니다 "));
     }
 
