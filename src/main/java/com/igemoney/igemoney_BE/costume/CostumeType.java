@@ -1,7 +1,6 @@
 package com.igemoney.igemoney_BE.costume;
 
 import java.util.Arrays;
-import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -23,7 +22,7 @@ public enum CostumeType {
         return "costume_" + costumeName + ".png";
     }
 
-    public String onFile()  {
+    public String getOnFileUrl()  {
         return "costume_" + costumeName + "_on.png";
     }
 
