@@ -16,6 +16,12 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(uniqueConstraints = {
+		@UniqueConstraint(
+				name = "uk_user_quiz",
+				columnNames = {"user_id", "quiz_id"}
+		)
+})
 public class UserQuizAttempt extends BaseEntity {
 
 	@Id
@@ -60,6 +66,7 @@ public class UserQuizAttempt extends BaseEntity {
 		return UserQuizAttempt.builder()
 			.user(user)
 			.quiz(quiz)
+			.isCompleted(true)
 			.isCorrect(true).build();
 	}
 

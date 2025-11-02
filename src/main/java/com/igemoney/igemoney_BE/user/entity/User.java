@@ -1,7 +1,7 @@
 package com.igemoney.igemoney_BE.user.entity;
 
 import com.igemoney.igemoney_BE.common.entity.BaseEntity;
-import com.igemoney.igemoney_BE.propensity.InvestmentPropensity;
+import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,13 +9,17 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "user",
+        indexes = {
+                @Index(name = "idx_consecutive_attendance_desc", columnList = "consecutive_attendance DESC")
+        })
 @Getter
 @NoArgsConstructor
 public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(name = "nickname", unique = true, nullable = false)
@@ -24,21 +28,24 @@ public class User extends BaseEntity {
     @Column(name = "kakao_oauth_id", unique = true)
     private Long kakaoOauthId;
 
-    @Column
+    @Column(name = "rating_point")
     private Integer ratingPoint;
 
-    @Column
+    @Column(name = "consecutive_attendance")
     private Integer consecutiveAttendance;
 
-    @Column
+    @Column(name = "today_count")
     private Integer todayCount;
 
-    @Column
+    @Column(name = "is_active")
     private Boolean isActive;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "investment_propensity")
     private InvestmentPropensity investmentPropensity;
+
+    @Column(nullable = false)
+    private Long wornCostumeId;
 
 
     // 가입단에서 유저를 만들 때 사용하는 생성자
@@ -47,10 +54,11 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.kakaoOauthId = oauthId;
         this.ratingPoint = 0;
-        this.consecutiveAttendance = 1;
+        this.consecutiveAttendance = 0;
         this.todayCount = 0;
         this.isActive = true;
         this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
+        this.wornCostumeId = 0L;
     }
 
 
@@ -72,6 +80,14 @@ public class User extends BaseEntity {
 
     public void updateInvestmentPropensity(InvestmentPropensity propensity) {
         this.investmentPropensity = propensity;
+    }
+
+    public void updateWornCostumeId(Long costumeId) {
+        this.wornCostumeId = costumeId;
+    }
+
+    public void takeOffWornCostume() {
+        this.wornCostumeId = 0L;
     }
 
     // todo: 푼 문제의 난이도 별 가중치를 다르게 적용시키는 비즈니스 로직 작성하기

@@ -1,10 +1,13 @@
 package com.igemoney.igemoney_BE.quiz.service;
 
 
+import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
+import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
-import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
+import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
+
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
 import com.igemoney.igemoney_BE.topic.repository.TopicRepository;
 import com.igemoney.igemoney_BE.quiz.repository.UserQuizAttemptRepository;
@@ -14,8 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 
 @Service
@@ -27,40 +31,48 @@ public class QuizService {
 	private final QuizRepository quizRepository;
 	private final TopicRepository topicRepository;
 	private final UserQuizAttemptRepository userQuizAttemptRepository;
+	private final BookmarkRepository bookmarkRepository;
 
 
-	public QuizResponse createQuiz(QuizCreateRequest request) {
-		QuizTopic topic = topicRepository.findById(request.topicId())
-			.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
+//	public QuizResponse createQuiz(QuizCreateRequest request) {
+//		QuizTopic topic = topicRepository.findById(request.topicId())
+//			.orElseThrow(() -> new IllegalArgumentException("Topic not found: " + request.topicId()));
+//
+//		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
+//		Quiz saved = quizRepository.save(quiz);
+//
+//		return QuizResponse.from(saved);
+//	}
+//
+//
+//	public void deleteQuiz(Long id) {
+//		quizRepository.deleteById(id);
+//	}
 
-		Quiz quiz = QuizCreateRequest.toEntity(request, topic);
-		Quiz saved = quizRepository.save(quiz);
 
-		return QuizResponse.from(saved);
-	}
-
-
-	public void deleteQuiz(Long id) {
-		quizRepository.deleteById(id);
-	}
+//	@Transactional(readOnly = true)
+//	public List<QuizResponse> getAll() {
+//		return quizRepository.findAll().stream()
+//			.map(QuizResponse::from)
+//			.toList();
+//	}
 
 
 	@Transactional(readOnly = true)
-	public List<QuizResponse> getAll() {
-		return quizRepository.findAll().stream()
-			.map(QuizResponse::from)
-			.toList();
-	}
+	public QuizResponse getQuizInfo(Long quizId, Long userId) {
+		Quiz quiz = quizRepository.findById(quizId)
+			.orElseThrow(QuizNotFoundException::new);
 
+		User user = userRepository.findByUserId(userId)
+			.orElseThrow(UserNotFoundException::new);
+
+		boolean isBookmarked = bookmarkRepository.existsByUserAndQuiz(user, quiz);
+		boolean isSolved = userQuizAttemptRepository.existsByUserAndQuizAndIsCompletedTrue(user, quiz);
+
+		return QuizResponse.from(quiz, isBookmarked, isSolved);
+	}
 
 	@Transactional(readOnly = true)
-	public QuizResponse getQuizInfo(Long id) {
-		Quiz quiz = quizRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
-
-		return QuizResponse.from(quiz);
-	}
-
 	public QuizReviewResponse getQuizReview(Long userId) {
 		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userId(userId);
 
@@ -75,13 +87,18 @@ public class QuizService {
 	}
 
 
-	// todo: 인증인가 들어오면 userId도 받고 User 찾는 로직 채워넣기
 	public void submitQuizResult(Long quizId, QuizSubmitRequest request, Long userId) {
 		Quiz quiz = quizRepository.findById(quizId)
-			.orElseThrow(() -> new IllegalArgumentException("Quiz not found"));
+			.orElseThrow(QuizNotFoundException::new);
 
 		User user = userRepository.findByUserId(userId)
-				.orElseThrow(() -> new NoSuchElementException("User not found"));
+				.orElseThrow(UserNotFoundException::new);
+
+		UserQuizAttempt attempt = userQuizAttemptRepository
+				.findByUserAndQuiz(user, quiz)
+				.orElse(null);
+
+		if (attempt != null) return ;
 
 		if(request.isCorrect()){
 			UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);
@@ -90,6 +107,23 @@ public class QuizService {
 			UserQuizAttempt userQuizWrong = UserQuizAttempt.userQuizInCorrect(user, quiz);
 			userQuizAttemptRepository.save(userQuizWrong);
 		}
+		quiz.updateCorrectRate(calculateAccuracyRate(quiz.getId()));
+
+		quizRepository.save(quiz);
 	}
+
+	public BigDecimal calculateAccuracyRate(Long quizId) {
+		long correctAttempts = userQuizAttemptRepository.countByQuizIdAndIsCorrectTrue(quizId);
+		long totalAttempts = userQuizAttemptRepository.countByQuizId(quizId);
+
+		if (totalAttempts == 0) {
+			return BigDecimal.ZERO;
+		}
+
+		return BigDecimal.valueOf(correctAttempts)
+				.divide(BigDecimal.valueOf(totalAttempts), 2, RoundingMode.HALF_UP)
+				.multiply(BigDecimal.valueOf(100));
+	}
+
 
 }

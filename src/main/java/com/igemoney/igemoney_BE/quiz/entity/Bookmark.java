@@ -28,7 +28,7 @@ public class Bookmark extends BaseEntity {
     private Quiz quiz;
 
     @Builder
-    private Bookmark(User user, Quiz quiz) {
+    public Bookmark(User user, Quiz quiz) {
         this.user = user;
         this.quiz = quiz;
     }

@@ -30,23 +30,20 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
 
     @Query("""
     select new com.igemoney.igemoney_BE.topic.dto.TopicQuizResponse(
-        q.id,
-        q.questionOrder,
-        q.questionTitle,
-        q.difficultyLevel,
-        case when (
-            select count(uqa)
-            from UserQuizAttempt uqa
-            where uqa.quiz.id = q.id
-              and uqa.id = :userId
-              and uqa.isCompleted = true
-        ) > 0 then true else false end,
-      case when (
-          select count(b)
-          from Bookmark b
-          where b.quiz.id = q.id
-            and b.user.userId = :userId
-      ) > 0 then true else false end\s
+      q.id, q.questionOrder, q.questionTitle, q.difficultyLevel,
+      case when exists (
+        select 1
+        from UserQuizAttempt uqa
+        where uqa.quiz = q
+          and uqa.user.userId = :userId
+          and uqa.isCompleted = true
+      ) then true else false end,
+      case when exists (
+        select 1
+        from Bookmark b
+        where b.quiz = q
+          and b.user.userId = :userId
+      ) then true else false end
     )
     from Quiz q
     where q.topic.id = :topicId
