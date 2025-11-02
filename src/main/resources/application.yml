@@ -10,6 +10,10 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
 
+app:
+  costume:
+    public-url-prefix: /costumes/
+
 jwt:
   secret: ${JWT_SECRET_KEY:this_is_dummy_jwt_secret_key_not_for_dev_but_ci_passing_lessssssssssgo}
   expiration: 864000000 # 240h

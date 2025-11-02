@@ -58,5 +58,7 @@ public class Quiz extends BaseEntity {
         this.questionOrder = questionOrder;
         this.correctRate = BigDecimal.ZERO;
     }
-
+    public void updateCorrectRate(BigDecimal newCorrectRate) {
+        this.correctRate = newCorrectRate;
+    }
 }

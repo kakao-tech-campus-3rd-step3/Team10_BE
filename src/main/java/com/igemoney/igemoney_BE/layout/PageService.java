@@ -1,12 +1,14 @@
 package com.igemoney.igemoney_BE.layout;
 
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
+import com.igemoney.igemoney_BE.costume.CostumeType;
 import com.igemoney.igemoney_BE.layout.dto.HomePageResponse;
 import com.igemoney.igemoney_BE.layout.dto.MypageResponse;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.entity.UserTier;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +21,15 @@ public class PageService {
 
     private final UserRepository userRepository;
 
+    @Value("${app.costume.public-url-prefix:/costumes/}")
+    private String publicPrefix;
+
     public HomePageResponse getHomeInfo(Long userId) {
         User user = userRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
 
 
-        String characterUri = "todo: 나중에 코스튬 구현하고 바꿔야함";
+        String characterUri = publicPrefix + CostumeType.fromId(user.getWornCostumeId()).getOnFileUrl();
         String nickname = user.getNickname();
         UserTier tier = UserTier.fromRatingPoint(user.getRatingPoint());
         String testResult = "todo: 나중에 테스트 구현하고 바꿔야함";
@@ -38,11 +43,13 @@ public class PageService {
             .orElseThrow(UserNotFoundException::new);
 
         int ratingPoint = user.getRatingPoint();
+        String characterUri = publicPrefix + CostumeType.fromId(user.getWornCostumeId()).getOnFileUrl();
+
 
         return MypageResponse.builder()
             .nickname(user.getNickname())
             .ratingPoint(ratingPoint)
-            .characterUri("콩식이이미지uri 추후구현예정")
+            .characterUri(characterUri)
             .tierName(UserTier.fromRatingPoint(ratingPoint).getName())
             .testResult("테스트 구현하고 바꿔야함")
             .testResultDescription("테스트구현하고 바꿔야함")
