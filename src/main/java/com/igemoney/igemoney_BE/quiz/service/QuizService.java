@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
+import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
@@ -103,6 +104,9 @@ public class QuizService {
 		if(request.isCorrect()){
 			UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);
 			userQuizAttemptRepository.save(userQuizCorrect);
+
+			int quizAwardScore = DifficultyLevel.getScore(quiz.getDifficultyLevel());
+			user.gainAwardRatingPoint(quizAwardScore);
 		} else {
 			UserQuizAttempt userQuizWrong = UserQuizAttempt.userQuizInCorrect(user, quiz);
 			userQuizAttemptRepository.save(userQuizWrong);
