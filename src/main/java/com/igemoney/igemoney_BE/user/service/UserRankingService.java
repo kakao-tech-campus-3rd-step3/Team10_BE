@@ -1,11 +1,13 @@
 package com.igemoney.igemoney_BE.user.service;
 
+import com.igemoney.igemoney_BE.costume.CostumeType;
 import com.igemoney.igemoney_BE.user.dto.RankingResponseDto;
 import com.igemoney.igemoney_BE.user.dto.UserRankingDto;
 import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import com.igemoney.igemoney_BE.user.type.RankingType;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +20,9 @@ import java.util.*;
 @Transactional
 public class UserRankingService {
     private final UserRepository userRepository;
+
+    @Value("${app.costume.public-url-prefix:/costumes/}")
+    private String publicPrefix;
 
     public RankingResponseDto getRatingPointRanking(Long userId) {
         User currentUser = userRepository.findByUserId(userId)
@@ -77,7 +82,7 @@ public class UserRankingService {
             Integer point = (rankingType == RankingType.RATING_POINT) ?
                     u.getRatingPoint() : u.getConsecutiveAttendance();
 
-            aboveDtos.add(new UserRankingDto(u.getNickname(), point, rank));
+            aboveDtos.add(new UserRankingDto(u.getNickname(), point, rank, null));
         }
 
         // 아래쪽 유저
@@ -87,14 +92,14 @@ public class UserRankingService {
             Integer point = (rankingType == RankingType.RATING_POINT) ?
                     u.getRatingPoint() : u.getConsecutiveAttendance();
 
-            belowDtos.add(new UserRankingDto(u.getNickname(), point, rank));
+            belowDtos.add(new UserRankingDto(u.getNickname(), point, rank, null));
         }
 
         // 현재 유저 DTO
         Integer currentPoint = (rankingType == RankingType.RATING_POINT)
                 ? currentUser.getRatingPoint()
                 : currentUser.getConsecutiveAttendance();
-        UserRankingDto currentUserRankingDto = new UserRankingDto(currentUser.getNickname(), currentPoint, myRank);
+        UserRankingDto currentUserRankingDto = new UserRankingDto(currentUser.getNickname(), currentPoint, myRank, null);
 
         // Top3 DTO
         List<UserRankingDto> topUsersRankingDtos = new ArrayList<>();
@@ -104,9 +109,18 @@ public class UserRankingService {
             Integer point = (rankingType == RankingType.RATING_POINT)
                     ? u.getRatingPoint() : u.getConsecutiveAttendance();
 
-            topUsersRankingDtos.add(new UserRankingDto(u.getNickname(), point, rank));
+            topUsersRankingDtos.add(new UserRankingDto(u.getNickname(), point, rank, getKongSkinUrl(u)));
         }
 
         return new RankingResponseDto(currentUserRankingDto, topUsersRankingDtos, aboveDtos, belowDtos);
+    }
+
+
+    private String getKongSkinUrl(User user) {
+        Long wornId = user.getWornCostumeId();
+        if (wornId == null) {
+            return null;
+        }
+        return publicPrefix + CostumeType.fromId(wornId).getOnFileUrl();
     }
 }
