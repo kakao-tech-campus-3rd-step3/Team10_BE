@@ -94,4 +94,7 @@ public class User extends BaseEntity {
         this.ratingPoint += ratingPoint;
     }
 
+    public void updateNickname(String reqName) {
+        this.nickname = reqName;
+    }
 }
