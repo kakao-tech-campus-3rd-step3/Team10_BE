@@ -3,7 +3,6 @@ package com.igemoney.igemoney_BE.quiz.controller;
 import com.igemoney.igemoney_BE.attendance.service.AttendanceService;
 import com.igemoney.igemoney_BE.common.annotation.Authenticated;
 import com.igemoney.igemoney_BE.quiz.dto.BookmarkListResponse;
-import com.igemoney.igemoney_BE.quiz.dto.QuizCreateRequest;
 import com.igemoney.igemoney_BE.quiz.dto.QuizResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizReviewResponse;
 import com.igemoney.igemoney_BE.quiz.dto.QuizSubmitRequest;
@@ -13,8 +12,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -55,11 +52,23 @@ public class QuizController {
     }
 
     @Authenticated
+    @GetMapping("/wrong")
+    public QuizReviewResponse getQuizWrong(@RequestAttribute("userId") Long userId) {
+        return quizService.getWrongQuiz(userId);
+    }
+
+    @Authenticated
     @GetMapping("/review")
-    public QuizReviewResponse getQuizReview(@RequestAttribute("userId") Long userId) {
+    public QuizReviewResponse getQuizReviews(@RequestAttribute("userId") Long userId) {
         return quizService.getQuizReview(userId);
     }
 
+    @Authenticated
+    @PostMapping("/review/{quizId}")
+    public void submitQuizReview(@PathVariable Long quizId, @RequestBody QuizSubmitRequest request,
+                                 @RequestAttribute Long userId) {
+        quizService.submitReviewQuiz(quizId, request, userId);
+    }
 
     @Authenticated
     @GetMapping("/bookmark")
