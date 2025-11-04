@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserStatusRepository extends JpaRepository<User, Long> {
 
+    Boolean existsByNickname(String reqName);
 }
