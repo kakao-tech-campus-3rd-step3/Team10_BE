@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -74,15 +75,28 @@ public class QuizService {
 	}
 
 	@Transactional(readOnly = true)
-	public QuizReviewResponse getQuizReview(Long userId) {
-		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userId(userId);
+	public QuizReviewResponse getWrongQuiz(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userIdAndIsCorrectFalse(userId);
 
 		List<ReviewQuizDetail> quizDetails = attempts.stream()
 			.map(ReviewQuizDetail::from)
 			.toList();
 
 		return new QuizReviewResponse(
-				!quizDetails.isEmpty(),
+				quizDetails
+		);
+	}
+	
+	@Transactional(readOnly = true)
+	public QuizReviewResponse getQuizReview(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userIdAndIsCorrectFalse(userId);
+		List<ReviewQuizDetail> quizDetails = attempts.stream()
+				.filter(attempt -> attempt.getNextReviewDate() != null &&
+						(attempt.getNextReviewDate().isEqual(LocalDate.now()) ||
+								attempt.getNextReviewDate().isBefore(LocalDate.now())))
+				.map(ReviewQuizDetail::from)
+				.toList();
+		return new QuizReviewResponse(
 				quizDetails
 		);
 	}
@@ -114,6 +128,16 @@ public class QuizService {
 		quiz.updateCorrectRate(calculateAccuracyRate(quiz.getId()));
 
 		quizRepository.save(quiz);
+	}
+	
+	public void submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
+		UserQuizAttempt reviewQuiz = userQuizAttemptRepository.findByUser_userIdAndQuizId(userId, quizId)
+				.orElseThrow(UserNotFoundException::new);
+		if(request.isCorrect()){
+			reviewQuiz.updateOnCorrectReview();
+		} else {
+			reviewQuiz.updateOnIncorrectReview();
+		}
 	}
 
 	public BigDecimal calculateAccuracyRate(Long quizId) {
