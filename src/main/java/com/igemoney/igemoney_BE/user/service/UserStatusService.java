@@ -89,4 +89,21 @@ public class UserStatusService {
 
         return new GetMyKongSikUrl(publicPrefix+imageUrl);
     }
+
+    public void updateNickname(Long userId, UpdateNicknameRequest request) {
+        User user = userStatusRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+
+        String reqName = request.nickname();
+
+        if(reqName.equals(user.getNickname())) {
+            throw new IllegalArgumentException("기존과 동일한 닉네임입니다");
+        }
+
+        if (userStatusRepository.existsByNickname(reqName)) {
+            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다");
+        }
+
+        user.updateNickname(reqName);
+    }
 }
