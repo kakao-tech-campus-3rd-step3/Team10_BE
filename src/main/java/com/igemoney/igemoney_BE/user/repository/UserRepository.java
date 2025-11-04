@@ -95,10 +95,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
         SELECT COUNT(u)
         FROM User u
         WHERE (u.consecutiveAttendance > :consecutiveAttendance)
-           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.lastAttendanceAt < :lastAttendanceAt)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt < :consecutiveAttendanceUpdatedAt)
     """)
     Long getAttendanceRank(
             @Param("consecutiveAttendance") Integer consecutiveAttendance,
-            @Param("lastAttendanceAt") LocalDateTime lastAttendanceAt
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt
     );
 }
