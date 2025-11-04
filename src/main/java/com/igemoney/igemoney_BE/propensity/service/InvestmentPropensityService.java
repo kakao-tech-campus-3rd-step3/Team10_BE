@@ -14,11 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class InvestmentPropensityService {
     private final UserRepository userRepository;
 
-    private static final int DEFENSIVE_MAX = 20;
-    private static final int CONSERVATIVE_MAX = 40;
-    private static final int BALANCED_MAX = 60;
-    private static final int ACTIVE_MAX = 80;
-
     @Transactional
     public InvestmentPropensityResponseDto diagnoseInvestmentPropensity(Long userId, InvestmentPropensityRequestDto request) {
         User user = userRepository.findById(userId)
