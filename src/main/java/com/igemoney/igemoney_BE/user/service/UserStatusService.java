@@ -2,7 +2,6 @@ package com.igemoney.igemoney_BE.user.service;
 
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.costume.CostumeType;
-import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityResponseDto;
 import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import com.igemoney.igemoney_BE.user.dto.*;
 import com.igemoney.igemoney_BE.user.entity.User;
