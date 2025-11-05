@@ -28,26 +28,26 @@ public interface UserRepository extends JpaRepository<User, Long> {
     // 현재 유저 기준 바로 위 2명
     @Query("""
         SELECT u FROM User u
-        WHERE u.ratingPoint > :ratingPoint
-           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :updatedAt)
-        ORDER BY u.ratingPoint DESC, u.ratingPointUpdatedAt ASC
+        WHERE (u.ratingPoint > :ratingPoint)
+           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :ratingPointUpdatedAt)
+        ORDER BY u.ratingPoint ASC, u.ratingPointUpdatedAt DESC
     """)
-    List<User> findTop2AboveByRating(
+    List<User> findTop2AboveByRatingPoint(
             @Param("ratingPoint") Integer ratingPoint,
-            @Param("updatedAt") LocalDateTime updatedAt,
+            @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
             Pageable pageable
     );
 
     // 현재 유저 기준 바로 아래 2명
     @Query("""
         SELECT u FROM User u
-        WHERE u.ratingPoint < :ratingPoint
-           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt > :updatedAt)
+        WHERE (u.ratingPoint < :ratingPoint)
+           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt > :ratingPointUpdatedAt)
         ORDER BY u.ratingPoint DESC, u.ratingPointUpdatedAt ASC
     """)
-    List<User> findTop2BelowByRating(
+    List<User> findTop2BelowByRatingPoint(
             @Param("ratingPoint") Integer ratingPoint,
-            @Param("updatedAt") LocalDateTime updatedAt,
+            @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
             Pageable pageable
     );
 
@@ -57,32 +57,32 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
         SELECT u FROM User u
-        WHERE u.consecutiveAttendance > :attendance
-           OR (u.consecutiveAttendance = :attendance AND u.consecutiveAttendanceUpdatedAt < :updatedAt)
-        ORDER BY u.consecutiveAttendance DESC, u.consecutiveAttendanceUpdatedAt ASC
+        WHERE (u.consecutiveAttendance > :consecutiveAttendance)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt < :consecutiveAttendanceUpdatedAt)
+        ORDER BY u.consecutiveAttendance ASC, u.consecutiveAttendanceUpdatedAt DESC
     """)
-    List<User> findTop2AboveByAttendance(
-            @Param("attendance") Integer attendance,
-            @Param("updatedAt") LocalDateTime updatedAt,
+    List<User> findTop2AboveByConsecutiveAttendance(
+            @Param("consecutiveAttendance") Integer consecutiveAttendance,
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt,
             Pageable pageable
     );
 
     @Query("""
         SELECT u FROM User u
-        WHERE u.consecutiveAttendance < :attendance
-           OR (u.consecutiveAttendance = :attendance AND u.consecutiveAttendanceUpdatedAt > :updatedAt)
+        WHERE (u.consecutiveAttendance < :consecutiveAttendance)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt > :consecutiveAttendanceUpdatedAt)
         ORDER BY u.consecutiveAttendance DESC, u.consecutiveAttendanceUpdatedAt ASC
     """)
-    List<User> findTop2BelowByAttendance(
-            @Param("attendance") Integer attendance,
-            @Param("updatedAt") LocalDateTime updatedAt,
+    List<User> findTop2BelowByConsecutiveAttendance(
+            @Param("consecutiveAttendance") Integer consecutiveAttendance,
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt,
             Pageable pageable
     );
 
     // 현재 유저 랭킹 순위 조회
     @Query("""
-        SELECT COUNT(u) 
-        FROM User u 
+        SELECT COUNT(u)
+        FROM User u
         WHERE (u.ratingPoint > :ratingPoint)
            OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :ratingPointUpdatedAt)
     """)
@@ -97,7 +97,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
         WHERE (u.consecutiveAttendance > :consecutiveAttendance)
            OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt < :consecutiveAttendanceUpdatedAt)
     """)
-    Long getAttendanceRank(
+    Long getConsecutiveAttendanceRank(
             @Param("consecutiveAttendance") Integer consecutiveAttendance,
             @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt
     );
