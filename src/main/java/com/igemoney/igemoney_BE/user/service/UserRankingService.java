@@ -34,10 +34,10 @@ public class UserRankingService {
 
         List<User> topRankingUsers = userRepository.findTop3ByRatingPointRank(PageRequest.of(0, 3));
 
-        List<User> aboveUsers = userRepository.findTop2AboveByRating(
+        List<User> aboveUsers = userRepository.findTop2AboveByRatingPoint(
                 ratingPoint, updatedAt, PageRequest.of(0, 2)
         );
-        List<User> belowUsers = userRepository.findTop2BelowByRating(
+        List<User> belowUsers = userRepository.findTop2BelowByRatingPoint(
                 ratingPoint, updatedAt, PageRequest.of(0, 2)
         );
 

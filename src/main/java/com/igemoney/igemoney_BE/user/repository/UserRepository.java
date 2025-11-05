@@ -32,7 +32,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
            OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :ratingPointUpdatedAt)
         ORDER BY u.ratingPoint ASC, u.ratingPointUpdatedAt DESC
     """)
-    List<User> findTop2AboveByRating(
+    List<User> findTop2AboveByRatingPoint(
             @Param("ratingPoint") Integer ratingPoint,
             @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
             Pageable pageable
@@ -45,7 +45,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
            OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt > :ratingPointUpdatedAt)
         ORDER BY u.ratingPoint DESC, u.ratingPointUpdatedAt ASC
     """)
-    List<User> findTop2BelowByRating(
+    List<User> findTop2BelowByRatingPoint(
             @Param("ratingPoint") Integer ratingPoint,
             @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
             Pageable pageable
