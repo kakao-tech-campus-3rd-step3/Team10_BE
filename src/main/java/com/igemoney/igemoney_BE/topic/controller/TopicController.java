@@ -45,8 +45,13 @@ public class TopicController {
 
     @Authenticated
     @GetMapping("/{topicId}")
-    public TopicQuizList getTopicQuizzes(@RequestAttribute("userId") Long userId, @PathVariable Long topicId){
+    public TopicQuizList getTopicQuizzes(
+            @RequestAttribute("userId") Long userId,
+            @PathVariable Long topicId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ){
         QuizTopic topic = topicService.getTopicOrThrow(topicId);
-        return topicService.getTopicQuizzes(userId,topicId);
+        return topicService.getTopicQuizzes(userId, topicId, page, size);
     }
 }
