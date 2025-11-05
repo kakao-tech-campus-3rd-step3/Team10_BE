@@ -50,14 +50,14 @@ public class UserRankingService {
 
         LocalDateTime updatedAt = currentUser.getConsecutiveAttendanceUpdatedAt();
         Integer consecutiveAttendance = currentUser.getConsecutiveAttendance();
-        Long myRank = userRepository.getAttendanceRank(consecutiveAttendance, updatedAt) + 1;
+        Long myRank = userRepository.getConsecutiveAttendanceRank(consecutiveAttendance, updatedAt) + 1;
 
         List<User> topRankingUsers = userRepository.findTop3ByConsecutiveAttendanceRank(PageRequest.of(0, 3));
 
-        List<User> aboveUsers = userRepository.findTop2AboveByAttendance(
+        List<User> aboveUsers = userRepository.findTop2AboveByConsecutiveAttendance(
                 consecutiveAttendance, updatedAt, PageRequest.of(0, 2)
         );
-        List<User> belowUsers = userRepository.findTop2BelowByAttendance(
+        List<User> belowUsers = userRepository.findTop2BelowByConsecutiveAttendance(
                 consecutiveAttendance, updatedAt, PageRequest.of(0, 2)
         );
 
@@ -74,6 +74,8 @@ public class UserRankingService {
     ) {
         List<UserRankingDto> aboveDtos = new ArrayList<>();
         List<UserRankingDto> belowDtos = new ArrayList<>();
+
+        Collections.reverse(aboveUsers);
 
         // 위쪽 유저
         for (int i = 0; i < aboveUsers.size(); i++) {
