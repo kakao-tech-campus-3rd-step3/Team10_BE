@@ -3,6 +3,8 @@ package com.igemoney.igemoney_BE.topic.repository;
 import com.igemoney.igemoney_BE.topic.dto.TopicQuizResponse;
 import com.igemoney.igemoney_BE.topic.dto.UserTopicResponse;
 import com.igemoney.igemoney_BE.topic.entity.QuizTopic;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -49,5 +51,7 @@ public interface TopicRepository extends JpaRepository<QuizTopic, Long> {
     where q.topic.id = :topicId
     order by q.questionOrder asc, q.id asc
 """)
-    List<TopicQuizResponse> findTopicQuizzes(Long userId, Long topicId);
+    Page<TopicQuizResponse> findTopicQuizzes(@Param("userId") Long userId,
+                                             @Param("topicId") Long topicId,
+                                             Pageable pageable);
 }
