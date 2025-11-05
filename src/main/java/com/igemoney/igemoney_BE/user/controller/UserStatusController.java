@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.user.dto.*;
 import com.igemoney.igemoney_BE.user.service.UserStatusService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class UserStatusController {
     @Authenticated
     @PostMapping("/me/nickname")
     @Operation(summary = "닉네임 변경")
-    public void updateNickname(@RequestAttribute Long userId, UpdateNicknameRequest request) {
+    public void updateNickname(@RequestAttribute Long userId, @Valid UpdateNicknameRequest request) {
         userStatusService.updateNickname(userId, request);
     }
 

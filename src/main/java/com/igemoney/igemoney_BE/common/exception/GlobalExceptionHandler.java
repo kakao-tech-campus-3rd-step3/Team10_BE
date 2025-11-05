@@ -8,6 +8,7 @@ import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.topic.exception.TopicNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -33,6 +34,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleNotFoundErrors(RuntimeException e) {
         ErrorResponse errorBody = ErrorResponse.of(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
+    }
+
+    // valid 에러 핸들링 용
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+        ErrorResponse errorBody = ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
 }
