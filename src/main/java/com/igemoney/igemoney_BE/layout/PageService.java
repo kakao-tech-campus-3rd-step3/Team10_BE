@@ -51,8 +51,8 @@ public class PageService {
             .ratingPoint(ratingPoint)
             .characterUri(characterUri)
             .tierName(UserTier.fromRatingPoint(ratingPoint).getName())
-            .testResult("테스트 구현하고 바꿔야함")
-            .testResultDescription("테스트구현하고 바꿔야함")
+            .testResult("")
+            .testResultDescription("")
             .build();
 
     }
