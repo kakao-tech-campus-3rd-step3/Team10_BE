@@ -101,4 +101,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
             @Param("consecutiveAttendance") Integer consecutiveAttendance,
             @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt
     );
+
+    boolean existsByNickname(String nickname);
 }
