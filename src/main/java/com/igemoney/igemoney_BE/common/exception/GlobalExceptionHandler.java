@@ -1,7 +1,7 @@
 package com.igemoney.igemoney_BE.common.exception;
 
 import com.igemoney.igemoney_BE.common.exception.quiz.QuizNotFoundException;
-import com.igemoney.igemoney_BE.common.exception.user.DuplicatieNicknameException;
+import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
 import com.igemoney.igemoney_BE.common.exception.user.NoUserIdTokenException;
 import com.igemoney.igemoney_BE.common.exception.user.NotRegisteredUserException;
 import com.igemoney.igemoney_BE.common.exception.user.UnvalidJwtTokenException;
@@ -39,12 +39,21 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorBody);
     }
 
-    @ExceptionHandler({
-        MethodArgumentNotValidException.class,
-        DuplicatieNicknameException.class,
-    })
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
-        ErrorResponse errorBody = ErrorResponse.of(HttpStatus.BAD_REQUEST.value(), e.getBindingResult().getAllErrors().get(0).getDefaultMessage());
+        ErrorResponse errorBody = ErrorResponse.of(
+            HttpStatus.BAD_REQUEST.value(),
+            e.getBindingResult().getAllErrors().get(0).getDefaultMessage()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
+    }
+
+    @ExceptionHandler(DuplicateNicknameException.class)
+    public ResponseEntity<ErrorResponse> handleDuplicateNickname(DuplicateNicknameException e) {
+        ErrorResponse errorBody = ErrorResponse.of(
+            HttpStatus.BAD_REQUEST.value(),
+            e.getMessage()
+        );
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorBody);
     }
 
