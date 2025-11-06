@@ -34,14 +34,14 @@
       - 4개 카테고리 별 퀴즈 제공<br/>
       - 4지선다, O/X, 주관식 유형 제공<br/><br/>
       <img width="350" alt="퀴즈 풀이 및 해설"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/0891a195-b7d3-4cf5-8d83-66f15e1ce695">
+           src="./imgs/QUIZ.gif">
     </td>
     <td align="center" width="50%">
       <b>오답 날짜 기반 자동 복습</b><br/>
       - 오답 문제 자동 복습 시스템<br/>
       - 학습 전 1일/4일 전 틀린 문제 제공<br/><br/>
       <img width="350" alt="오답 날짜 기반 자동 복습"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/7f9dd89d-d40d-415b-9c2b-f63363ced835">
+           src="./imgs/Review.gif">
     </td>
   </tr>
 
@@ -51,14 +51,14 @@
       - 5문제 풀이 시 일일 출석 기록<br/>
       - 연속 출석 랭킹으로 꾸준한 학습 동기 고취<br/><br/>
       <img width="350" alt="출석 기능"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/101dc410-2f68-4ca4-84b6-c5d00005df84">
+           src="./imgs/Attendence.gif">
     </td>
     <td align="center" width="50%">
       <b>랭킹 및 티어 시스템</b><br/>
       - 레이팅 기반 티어 제공<br/>
       - 누적 퀴즈 풀이, 연속 출석일별 랭킹 순위 제공<br/><br/>
       <img width="350" alt="랭킹 및 티어 시스템"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/f0812e9f-f1df-4c94-bbb0-a0dab46f022f">
+           src="./imgs/Ranking.png">
     </td>
   </tr>
 
@@ -68,14 +68,14 @@
       - 나만의 메인 캐릭터 '콩식이' 꾸미기<br/>
       - 추후 퀴즈 풀이로 얻는 코인 도입해 기능 강화 예정<br/><br/>
       <img width="350" alt="코스튬 기능"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/0cabf489-e6e4-4236-aba1-b8d78b18f316">
+           src="./imgs/Costume.gif">
     </td>
     <td align="center" width="50%">
       <b>금융 컨텐츠</b><br/>
       - 다양한 금융 상품 소개<br/>
       - 사람들이 놓칠 수 있는 실생활 금융 정보 제공<br/><br/>
       <img width="350" alt="금융 컨텐츠"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/a975f794-b7b1-40db-be2f-51890e4d9d39">
+           src="./imgs/Contents.gif">
     </td>
   </tr>
 
@@ -85,13 +85,13 @@
       - 자가 체크리스트를 통한 내 투자 성향 진단<br/>
       - 5가지 투자 성향 제공<br/><br/>
       <img width="350" alt="투자 성향 테스트"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/cd6b17f4-additional1">
+           src="./imgs/Test.gif">
     </td>
     <td align="center" width="50%">
       <b>성향 및 티어 공유 기능</b><br/>
       - 나의 투자 성향 테스트 결과 및 내 티어 이미지 공유 기능<br/><br/>
       <img width="350" alt="공유 기능"
-           src="https://github.com/monsta-zo/Team7_FE/assets/83194164/cd6b17f4-additional2">
+           src="./imgs/Share.png">
     </td>
   </tr>
 </table>
