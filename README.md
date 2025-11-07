@@ -112,6 +112,12 @@ Spring | MySQL | JPA | Docker | AWS | Nginx
 # ERD
 <img src="./imgs/erd.png" width=80%>
 
+# API 
+<img width="728" height="558" alt="image" src="https://github.com/user-attachments/assets/37d68889-4335-40af-a510-6bc18dd8c14b" />
+<img width="728" height="453" alt="image" src="https://github.com/user-attachments/assets/e09605ae-508d-4f9d-9645-13fe48eaea79" />
+
+
+
 
 # 이게머니 BE 팀 구성원
 
