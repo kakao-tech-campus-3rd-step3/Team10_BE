@@ -3,8 +3,7 @@ name: CI/CD using github actions & docker
 on:
   push:
     branches:
-      - "release"
-      - "release/**"
+      - "main"
 
 jobs:
   build:
@@ -42,13 +41,14 @@ jobs:
           docker push ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
           docker push ${{ secrets.DOCKER_USERNAME }}/igemoney-be:latest
 
-      # EC2 배포
-      - name: Docker image pull & Deploy to EC2
+      # 미니피시 서버 배포
+      - name: Docker image pull & Deploy to mini pc
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.EC2_HOST }} # EC2 인스턴스 퍼블릭 DNS
-          username: ubuntu
-          key: ${{ secrets.EC2_PRIVATE_KEY }} # pem 키
+          host: ${{ secrets.MINI_PC_HOST }} # EC2 인스턴스 퍼블릭 DNS
+          username: siwoong
+          key: ${{ secrets.MINI_PC_PRIVATE_KEY }}
+          port: 2222
           # 도커 작업
           script: |
             # 커밋 해시 설정
@@ -73,7 +73,7 @@ jobs:
             --network igemoney-net \
             --env-file ~/igemoney-be.env \
             -e SPRING_PROFILES_ACTIVE=prod \
-            -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
+            -p 8082:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 4. 사용하지 않는 이미지 정리
             sudo docker image prune -a -f
