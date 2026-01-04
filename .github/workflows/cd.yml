@@ -63,7 +63,7 @@ jobs:
             docker pull ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 2. 기존에 실행 중인 컨테이너가 있다면 중지하고 삭제
-            if [ $(sudo docker ps -a -q -f name=igemoney-be) ]; then
+            if [ $(docker ps -a -q -f name=igemoney-be) ]; then
               docker stop igemoney-be
               docker rm igemoney-be
             fi
