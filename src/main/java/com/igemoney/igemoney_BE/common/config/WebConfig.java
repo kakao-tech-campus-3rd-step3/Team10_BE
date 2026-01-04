@@ -20,7 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
 		registry.addMapping("/**")
 			.allowedOrigins(
 				"https://egemoney.vercel.app",
-				"http://localhost:5173"
+				"http://localhost:5173",
+				"https://egemoney.co.kr",
+				"https://www.egemoney.co.kr"
 			)
 			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
 			.allowedHeaders("*")

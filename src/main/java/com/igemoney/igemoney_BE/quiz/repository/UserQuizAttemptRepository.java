@@ -12,12 +12,13 @@ import java.util.Optional;
 
 public interface UserQuizAttemptRepository extends JpaRepository<UserQuizAttempt, Long> {
 
-    List<UserQuizAttempt> findByUser_userId(@Param("userId") Long userId);
+    List<UserQuizAttempt> findByUser_userIdAndIsCorrectFalse(@Param("userId") Long userId);
 
     boolean existsByUserAndQuizAndIsCompletedTrue(User user, Quiz quiz);
 
     long countByQuizIdAndIsCorrectTrue(Long quizId);
     long countByQuizId(Long quizId);
     Optional<UserQuizAttempt> findByUserAndQuiz(User user, Quiz quiz);
+    Optional<UserQuizAttempt> findByUser_userIdAndQuizId(Long userId, Long quizId);
 
 }

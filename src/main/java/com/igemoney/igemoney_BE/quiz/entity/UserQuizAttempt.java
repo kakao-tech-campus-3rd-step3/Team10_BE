@@ -95,6 +95,7 @@ public class UserQuizAttempt extends BaseEntity {
 			this.reviewStep = ReviewStep.DONE;
 			this.isCompleted = true;
 			this.nextReviewDate = null;
+			this.user.gainAwardRatingPoint(this.quiz.getDifficultyLevel().getScore());
 		}
 	}
 

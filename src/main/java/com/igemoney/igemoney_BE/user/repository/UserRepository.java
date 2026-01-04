@@ -2,6 +2,7 @@ package com.igemoney.igemoney_BE.user.repository;
 
 import com.igemoney.igemoney_BE.user.entity.User;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,23 +22,85 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 랭킹 서비스 관련
     // RatingPoint 상위 3명
-    List<User> findTop3ByOrderByRatingPointDesc();
+    @Query("SELECT u FROM User u ORDER BY u.ratingPoint DESC, u.ratingPointUpdatedAt ASC")
+    List<User> findTop3ByRatingPointRank(Pageable pageable);
 
     // 현재 유저 기준 바로 위 2명
-    List<User> findTop2ByRatingPointGreaterThanOrderByRatingPointAsc(Integer  ratingPoint);
+    @Query("""
+        SELECT u FROM User u
+        WHERE (u.ratingPoint > :ratingPoint)
+           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :ratingPointUpdatedAt)
+        ORDER BY u.ratingPoint ASC, u.ratingPointUpdatedAt DESC
+    """)
+    List<User> findTop2AboveByRatingPoint(
+            @Param("ratingPoint") Integer ratingPoint,
+            @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
+            Pageable pageable
+    );
 
     // 현재 유저 기준 바로 아래 2명
-    List<User> findTop2ByRatingPointLessThanOrderByRatingPointDesc(Integer  ratingPoint);
+    @Query("""
+        SELECT u FROM User u
+        WHERE (u.ratingPoint < :ratingPoint)
+           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt > :ratingPointUpdatedAt)
+        ORDER BY u.ratingPoint DESC, u.ratingPointUpdatedAt ASC
+    """)
+    List<User> findTop2BelowByRatingPoint(
+            @Param("ratingPoint") Integer ratingPoint,
+            @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt,
+            Pageable pageable
+    );
 
     // 연속 출석 기준 랭킹
-    List<User> findTop3ByOrderByConsecutiveAttendanceDesc();
-    List<User> findTop2ByConsecutiveAttendanceGreaterThanOrderByConsecutiveAttendanceAsc(Integer  consecutiveAttendance);
-    List<User> findTop2ByConsecutiveAttendanceLessThanOrderByConsecutiveAttendanceDesc(Integer  consecutiveAttendance);
+    @Query("SELECT u FROM User u ORDER BY u.consecutiveAttendance DESC, u.consecutiveAttendanceUpdatedAt ASC")
+    List<User> findTop3ByConsecutiveAttendanceRank(Pageable pageable);
 
-    // 랭킹 순위 조회
-    @Query("SELECT COUNT(u) FROM User u WHERE u.ratingPoint > :ratingPoint")
-    Long countUsersWithHigherRatingPoint(@Param("ratingPoint") Integer ratingPoint);
+    @Query("""
+        SELECT u FROM User u
+        WHERE (u.consecutiveAttendance > :consecutiveAttendance)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt < :consecutiveAttendanceUpdatedAt)
+        ORDER BY u.consecutiveAttendance ASC, u.consecutiveAttendanceUpdatedAt DESC
+    """)
+    List<User> findTop2AboveByConsecutiveAttendance(
+            @Param("consecutiveAttendance") Integer consecutiveAttendance,
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt,
+            Pageable pageable
+    );
 
-    @Query("SELECT COUNT(u) FROM User u WHERE u.consecutiveAttendance > :consecutiveAttendance")
-    Long countUsersWithHigherConsecutiveAttendance(@Param("consecutiveAttendance") Integer consecutiveAttendance);
+    @Query("""
+        SELECT u FROM User u
+        WHERE (u.consecutiveAttendance < :consecutiveAttendance)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt > :consecutiveAttendanceUpdatedAt)
+        ORDER BY u.consecutiveAttendance DESC, u.consecutiveAttendanceUpdatedAt ASC
+    """)
+    List<User> findTop2BelowByConsecutiveAttendance(
+            @Param("consecutiveAttendance") Integer consecutiveAttendance,
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt,
+            Pageable pageable
+    );
+
+    // 현재 유저 랭킹 순위 조회
+    @Query("""
+        SELECT COUNT(u)
+        FROM User u
+        WHERE (u.ratingPoint > :ratingPoint)
+           OR (u.ratingPoint = :ratingPoint AND u.ratingPointUpdatedAt < :ratingPointUpdatedAt)
+    """)
+    Long getRatingRank(
+            @Param("ratingPoint") Integer ratingPoint,
+            @Param("ratingPointUpdatedAt") LocalDateTime ratingPointUpdatedAt
+    );
+
+    @Query("""
+        SELECT COUNT(u)
+        FROM User u
+        WHERE (u.consecutiveAttendance > :consecutiveAttendance)
+           OR (u.consecutiveAttendance = :consecutiveAttendance AND u.consecutiveAttendanceUpdatedAt < :consecutiveAttendanceUpdatedAt)
+    """)
+    Long getConsecutiveAttendanceRank(
+            @Param("consecutiveAttendance") Integer consecutiveAttendance,
+            @Param("consecutiveAttendanceUpdatedAt") LocalDateTime consecutiveAttendanceUpdatedAt
+    );
+
+    boolean existsByNickname(String nickname);
 }

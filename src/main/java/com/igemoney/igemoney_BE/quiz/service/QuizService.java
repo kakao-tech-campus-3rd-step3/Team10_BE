@@ -6,6 +6,7 @@ import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.quiz.dto.*;
 import com.igemoney.igemoney_BE.quiz.entity.UserQuizAttempt;
 import com.igemoney.igemoney_BE.quiz.entity.Quiz;
+import com.igemoney.igemoney_BE.quiz.entity.enums.DifficultyLevel;
 import com.igemoney.igemoney_BE.quiz.repository.BookmarkRepository;
 
 import com.igemoney.igemoney_BE.quiz.repository.QuizRepository;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -73,15 +75,28 @@ public class QuizService {
 	}
 
 	@Transactional(readOnly = true)
-	public QuizReviewResponse getQuizReview(Long userId) {
-		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userId(userId);
+	public QuizReviewResponse getWrongQuiz(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userIdAndIsCorrectFalse(userId);
 
 		List<ReviewQuizDetail> quizDetails = attempts.stream()
 			.map(ReviewQuizDetail::from)
 			.toList();
 
 		return new QuizReviewResponse(
-				!quizDetails.isEmpty(),
+				quizDetails
+		);
+	}
+	
+	@Transactional(readOnly = true)
+	public QuizReviewResponse getQuizReview(Long userId) {
+		List<UserQuizAttempt> attempts = userQuizAttemptRepository.findByUser_userIdAndIsCorrectFalse(userId);
+		List<ReviewQuizDetail> quizDetails = attempts.stream()
+				.filter(attempt -> attempt.getNextReviewDate() != null &&
+						(attempt.getNextReviewDate().isEqual(LocalDate.now()) ||
+								attempt.getNextReviewDate().isBefore(LocalDate.now())))
+				.map(ReviewQuizDetail::from)
+				.toList();
+		return new QuizReviewResponse(
 				quizDetails
 		);
 	}
@@ -103,6 +118,9 @@ public class QuizService {
 		if(request.isCorrect()){
 			UserQuizAttempt userQuizCorrect = UserQuizAttempt.userQuizCorrect(user, quiz);
 			userQuizAttemptRepository.save(userQuizCorrect);
+
+			int quizAwardScore = DifficultyLevel.getScore(quiz.getDifficultyLevel());
+			user.gainAwardRatingPoint(quizAwardScore);
 		} else {
 			UserQuizAttempt userQuizWrong = UserQuizAttempt.userQuizInCorrect(user, quiz);
 			userQuizAttemptRepository.save(userQuizWrong);
@@ -110,6 +128,16 @@ public class QuizService {
 		quiz.updateCorrectRate(calculateAccuracyRate(quiz.getId()));
 
 		quizRepository.save(quiz);
+	}
+	
+	public void submitReviewQuiz(Long quizId, QuizSubmitRequest request, Long userId) {
+		UserQuizAttempt reviewQuiz = userQuizAttemptRepository.findByUser_userIdAndQuizId(userId, quizId)
+				.orElseThrow(UserNotFoundException::new);
+		if(request.isCorrect()){
+			reviewQuiz.updateOnCorrectReview();
+		} else {
+			reviewQuiz.updateOnIncorrectReview();
+		}
 	}
 
 	public BigDecimal calculateAccuracyRate(Long quizId) {

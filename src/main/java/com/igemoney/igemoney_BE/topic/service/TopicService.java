@@ -10,6 +10,9 @@ import com.igemoney.igemoney_BE.user.entity.User;
 import com.igemoney.igemoney_BE.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties.Retry.Topic;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,15 +47,18 @@ public class TopicService {
         return new UserTopicList(responses);
     }
 
-    public TopicQuizList getTopicQuizzes(Long userId, Long topicId) {
+    public TopicQuizList getTopicQuizzes(Long userId, Long topicId, int page, int size) {
         User user = userRepository.findById(userId)
             .orElseThrow(UserNotFoundException::new);
 
         QuizTopic topic = topicRepository.findById(topicId)
             .orElseThrow(() -> new TopicNotFoundException(topicId));
 
-        List<TopicQuizResponse> responses = topicRepository.findTopicQuizzes(userId, topicId);
-        return new TopicQuizList(responses);
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<TopicQuizResponse> quizPage = topicRepository.findTopicQuizzes(userId, topicId, pageable);
+
+        return new TopicQuizList(quizPage.getContent());
     }
 
     public QuizTopic getTopicOrThrow(Long topicId) {

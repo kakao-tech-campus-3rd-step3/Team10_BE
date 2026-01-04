@@ -1,5 +1,6 @@
 package com.igemoney.igemoney_BE.user.service;
 
+import com.igemoney.igemoney_BE.common.exception.user.DuplicateNicknameException;
 import com.igemoney.igemoney_BE.common.exception.user.NotRegisteredUserException;
 import com.igemoney.igemoney_BE.common.utils.JwtUtil;
 import com.igemoney.igemoney_BE.user.dto.CreateUserRequest;
@@ -22,6 +23,11 @@ public class UserService {
 
 
     public LoginResponse register(CreateUserRequest req) {
+
+        // 0. 닉네임 중복 검증
+        if(userRepository.existsByNickname(req.nickname())){
+            throw new DuplicateNicknameException();
+        }
       
         // 1. 액세스 토큰 발급
         String accessToken = oAuthProvider.getProviderAccessToken(req.code()).accessToken();
@@ -33,7 +39,6 @@ public class UserService {
         User savedUser = userRepository.save(new User(req.nickname(), oauthId));
 
         // 4. 우리 서비스 자체 jwt accessToken 발급
-        // todo: refreshToken 공부해서 적용해보기
         String jwtToken = jwtUtil.generateToken(savedUser);
 
         return new LoginResponse(jwtToken);
@@ -47,7 +52,6 @@ public class UserService {
         Long oauthId = oAuthProvider.getProviderUserInfo(accessToken).id();
 
         // 3. 가입하지 않은 유저라면 401에러 리턴
-        // fixme: 제공자 추가된다면 메서드명도 카카오 모르게 해야함
         User user = userRepository.findByKakaoOauthId(oauthId)
             .orElseThrow(() -> new NotRegisteredUserException("가입하지 않은 유저입니다. 회원가입 해야 합니다."));
 

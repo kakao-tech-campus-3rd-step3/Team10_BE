@@ -7,11 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "user",
         indexes = {
-                @Index(name = "idx_consecutive_attendance_desc", columnList = "consecutive_attendance DESC")
+                @Index(name = "idx_rating_point_rank",
+                        columnList = "rating_point DESC, rating_point_updated_at ASC"),
+                @Index(name = "idx_consecutive_attendance_rank",
+                        columnList = "consecutive_attendance DESC, consecutive_attendance_updated_at ASC")
         })
 @Getter
 @NoArgsConstructor
@@ -31,8 +36,14 @@ public class User extends BaseEntity {
     @Column(name = "rating_point")
     private Integer ratingPoint;
 
+    @Column(name = "rating_point_updated_at")
+    private LocalDateTime ratingPointUpdatedAt;
+
     @Column(name = "consecutive_attendance")
     private Integer consecutiveAttendance;
+
+    @Column(name = "consecutive_attendance_updated_at")
+    private LocalDateTime consecutiveAttendanceUpdatedAt;
 
     @Column(name = "today_count")
     private Integer todayCount;
@@ -59,6 +70,10 @@ public class User extends BaseEntity {
         this.isActive = true;
         this.investmentPropensity = InvestmentPropensity.UNDIAGNOSED;
         this.wornCostumeId = 0L;
+
+        LocalDateTime now = LocalDateTime.now();
+        this.ratingPointUpdatedAt = now;
+        this.consecutiveAttendanceUpdatedAt = now;
     }
 
 
@@ -72,10 +87,12 @@ public class User extends BaseEntity {
 
     public void increaseConsecutiveAttendance() {
         this.consecutiveAttendance++;
+        this.consecutiveAttendanceUpdatedAt = LocalDateTime.now();
     }
 
     public  void resetConsecutiveAttendance() {
         this.consecutiveAttendance = 0;
+        this.consecutiveAttendanceUpdatedAt = LocalDateTime.now();
     }
 
     public void updateInvestmentPropensity(InvestmentPropensity propensity) {
@@ -90,9 +107,12 @@ public class User extends BaseEntity {
         this.wornCostumeId = 0L;
     }
 
-    // todo: 푼 문제의 난이도 별 가중치를 다르게 적용시키는 비즈니스 로직 작성하기
-    public void updateRatingPoint(Integer ratingPoint) {
-        this.ratingPoint = ratingPoint;
+    public void gainAwardRatingPoint(int ratingPoint) {
+        this.ratingPoint += ratingPoint;
+        this.ratingPointUpdatedAt = LocalDateTime.now();
     }
 
+    public void updateNickname(String reqName) {
+        this.nickname = reqName;
+    }
 }

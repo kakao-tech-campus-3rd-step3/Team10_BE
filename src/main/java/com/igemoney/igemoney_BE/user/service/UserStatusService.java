@@ -2,7 +2,6 @@ package com.igemoney.igemoney_BE.user.service;
 
 import com.igemoney.igemoney_BE.common.exception.user.UserNotFoundException;
 import com.igemoney.igemoney_BE.costume.CostumeType;
-import com.igemoney.igemoney_BE.propensity.dto.InvestmentPropensityResponseDto;
 import com.igemoney.igemoney_BE.propensity.type.InvestmentPropensity;
 import com.igemoney.igemoney_BE.user.dto.*;
 import com.igemoney.igemoney_BE.user.entity.User;
@@ -88,5 +87,22 @@ public class UserStatusService {
         String imageUrl = CostumeType.fromId(wornId).getOnFileUrl();
 
         return new GetMyKongSikUrl(publicPrefix+imageUrl);
+    }
+
+    public void updateNickname(Long userId, UpdateNicknameRequest request) {
+        User user = userStatusRepository.findById(userId)
+            .orElseThrow(UserNotFoundException::new);
+
+        String reqName = request.nickname();
+
+        if(reqName.equals(user.getNickname())) {
+            throw new IllegalArgumentException("기존과 동일한 닉네임입니다");
+        }
+
+        if (userStatusRepository.existsByNickname(reqName)) {
+            throw new IllegalArgumentException("이미 사용 중인 닉네임입니다");
+        }
+
+        user.updateNickname(reqName);
     }
 }
