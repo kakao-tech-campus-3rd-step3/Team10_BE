@@ -60,20 +60,20 @@ jobs:
             EOF
             
             # 1. 특정 버전의 이미지 받기 (커밋 해시 사용)
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
+            docker pull ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 2. 기존에 실행 중인 컨테이너가 있다면 중지하고 삭제
             if [ $(sudo docker ps -a -q -f name=igemoney-be) ]; then
-              sudo docker stop igemoney-be
-              sudo docker rm igemoney-be
+              docker stop igemoney-be
+              docker rm igemoney-be
             fi
 
             # 3. 새 컨테이너를 실행 (커밋 해시 버전으로, .env 파일 사용, prod 프로파일 활성화)
-            sudo docker run -d --name igemoney-be \
+            docker run -d --name igemoney-be \
             --network igemoney-net \
             --env-file ~/igemoney-be.env \
             -e SPRING_PROFILES_ACTIVE=prod \
             -p 8082:8080 ${{ secrets.DOCKER_USERNAME }}/igemoney-be:$COMMIT_HASH
 
             # 4. 사용하지 않는 이미지 정리
-            sudo docker image prune -a -f
+            docker image prune -a -f
